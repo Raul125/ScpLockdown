@@ -1,5 +1,8 @@
 # SCPLockdown
 
+<a href="https://github.com/Raul125/SCPLockdown/releases"><img src="https://img.shields.io/github/v/release/Raul125/SCPLockdown?include_prereleases&label=Release" alt="Releases"></a>
+<a href="https://github.com/Raul125/SCPLockdown/releases"><img src="https://img.shields.io/github/downloads/Raul125/SCPLockdown/total?label=Downloads" alt="Downloads"></a>
+
 Original Dev: https://github.com/AlmightyLks
 
 Exiled Plugin to lockdown SCPs at the beginning of the round for a specified amount of time.<br>
