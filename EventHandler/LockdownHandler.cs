@@ -151,7 +151,7 @@ namespace ScpLockdown.EventHandlers
 
         public void OnChangingCamera(ChangingCameraEventArgs ev)
         {
-            if (LockdownStates.Scp079LockedUp)
+            if (LockdownStates.Scp079LockedUp && !plugin.Config.Scp079Camera)
             {
                 ev.IsAllowed = false;
             }

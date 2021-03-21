@@ -74,6 +74,7 @@ namespace ScpLockdown
             EXPlayerEvents.FailingEscapePocketDimension -= _lockdownHandler.OnFailingEscapePocketDimension;
             EX079Events.InteractingDoor -= _lockdownHandler.OnInteractingDoor;
             EX079Events.InteractingTesla -= _lockdownHandler.OnInteractingTesla;
+            EX079Events.ChangingCamera -= _lockdownHandler.OnChangingCamera;
             EXServerEvents.RoundEnded -= _lockdownHandler.OnRoundEnded;
 
             _lockdownHandler.ResetAllStates();

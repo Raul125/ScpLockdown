@@ -21,6 +21,9 @@ namespace ScpLockdown
             { RoleType.Scp93953, 60 }
         };
 
+        [Description("Can the Scp-079 use the cameras while is in lockdown?")]
+        public bool Scp079Camera { get; private set; } = false;
+
         [Description("Time of Class-D locked in his cells, 0 is disabled")]
         public int ClassDLock { get; private set; } = 0;
 
