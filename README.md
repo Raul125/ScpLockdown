@@ -1,5 +1,8 @@
 # SCPLockdown
 
+<a href="https://github.com/Raul125/SCPLockdown/releases"><img src="https://img.shields.io/github/v/release/Raul125/SCPLockdown?include_prereleases&label=Release" alt="Releases"></a>
+<a href="https://github.com/Raul125/SCPLockdown/releases"><img src="https://img.shields.io/github/downloads/Raul125/SCPLockdown/total?label=Downloads" alt="Downloads"></a>
+
 Original Dev: https://github.com/AlmightyLks
 
 Exiled Plugin to lockdown SCPs at the beginning of the round for a specified amount of time.<br>
@@ -24,6 +27,8 @@ scp_lockdown:
     Scp049: 60
     Scp93989: 60
     Scp93953: 60
+  # Can the Scp-079 use the cameras while is in lockdown?
+  scp079_camera: false
   # Time of Class-D locked in his cells, 0 is disabled
   class_d_lock: 0
   # Displayed to the scps when his lockdown is finished.
@@ -41,7 +46,7 @@ scp_lockdown:
 Peanut's connector door will be locked down for the specified duration because Heavy Gate is opened by game base.  
 
 #### SCP 079
-Computer cannot interact with doors, elevators and cameras such for specified duration.
+Computer cannot interact with doors, elevators and "cameras" such for specified duration.
 
 #### SCP 096
 Shy Guy's door towards the HCZ will be locked down for the specified duration.  
