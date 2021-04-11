@@ -5,14 +5,12 @@ using Exiled.API.Enums;
 using Exiled.API.Features;
 using ScpLockdown.EventHandlers;
 using System;
-using HarmonyLib;
 using ScpLockdown.Helper;
 
 namespace ScpLockdown
 {
     public class ScpLockdown : Plugin<Config>
     {
-        public Harmony Harmony { get; private set; }
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
 
         private ScpLockdown()
@@ -31,21 +29,19 @@ namespace ScpLockdown
 
         public override string Prefix { get; } = "ScpLockdown";
 
-        public override Version Version { get; } = new Version(1, 0, 1);
+        public override Version Version { get; } = new Version(1, 0, 2);
 
         public override Version RequiredExiledVersion { get; } = new Version(2, 8, 0);
 
         public override void OnEnabled()
         {
             RegisterEvents();
-            Patch();
 
             base.OnEnabled();
         }
         public override void OnDisabled()
         {
             UnRegisterEvents();
-            Unpatch();
 
             base.OnDisabled();
         }
@@ -63,6 +59,8 @@ namespace ScpLockdown
             EX079Events.InteractingDoor += _lockdownHandler.OnInteractingDoor;
             EX079Events.InteractingTesla += _lockdownHandler.OnInteractingTesla;
             EX079Events.ChangingCamera += _lockdownHandler.OnChangingCamera;
+            EX079Events.ElevatorTeleport += _lockdownHandler.OnElevatorTeleport;
+            EX079Events.StartingSpeaker += _lockdownHandler.OnStartingSpeaker;
             EXServerEvents.RoundEnded += _lockdownHandler.OnRoundEnded;
         }
         private void UnRegisterEvents()
@@ -75,29 +73,13 @@ namespace ScpLockdown
             EX079Events.InteractingDoor -= _lockdownHandler.OnInteractingDoor;
             EX079Events.InteractingTesla -= _lockdownHandler.OnInteractingTesla;
             EX079Events.ChangingCamera -= _lockdownHandler.OnChangingCamera;
+            EX079Events.ElevatorTeleport -= _lockdownHandler.OnElevatorTeleport;
+            EX079Events.StartingSpeaker -= _lockdownHandler.OnStartingSpeaker;
             EXServerEvents.RoundEnded -= _lockdownHandler.OnRoundEnded;
 
             _lockdownHandler.ResetAllStates();
             _lockdownHandler = null;
             methods = null;
-        }
-
-        private void Patch()
-        {
-            try
-            {
-                Harmony = new Harmony($"raul125.scplockdown.{DateTime.Now.Ticks}");
-                Harmony.PatchAll();
-            }
-            catch (Exception e)
-            {
-                Log.Error($"Patching failed {e}");
-            }
-        }
-        private void Unpatch()
-        {
-            Harmony.UnpatchAll();
-            Harmony = null;
         }
     }
 }

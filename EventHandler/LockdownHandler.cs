@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MEC;
 using Exiled.Events.EventArgs;
-using ScpLockdown.DirtyWorkaround;
+using ScpLockdown.States;
 using Interactables.Interobjects.DoorUtils;
 using System.Collections.ObjectModel;
 
@@ -141,12 +141,10 @@ namespace ScpLockdown.EventHandlers
         }
         public void OnInteractingDoor(InteractingDoorEventArgs ev)
         {
-            ev.IsAllowed = !LockdownStates.Scp079LockedUp;
-        }
-
-        public void ResetAllStates()
-        {
-            _lockdownStates.ResetAllStates();
+            if (LockdownStates.Scp079LockedUp)
+            {
+                ev.IsAllowed = false;
+            }
         }
 
         public void OnChangingCamera(ChangingCameraEventArgs ev)
@@ -155,6 +153,27 @@ namespace ScpLockdown.EventHandlers
             {
                 ev.IsAllowed = false;
             }
+        }
+
+        public void OnElevatorTeleport(ElevatorTeleportEventArgs ev)
+        {
+            if (LockdownStates.Scp079LockedUp && !plugin.Config.Scp079Camera)
+            {
+                ev.IsAllowed = false;
+            }
+        }
+
+        public void OnStartingSpeaker(StartingSpeakerEventArgs ev)
+        {
+            if (LockdownStates.Scp079LockedUp)
+            {
+                ev.IsAllowed = false;
+            }
+        }
+
+        public void ResetAllStates()
+        {
+            _lockdownStates.ResetAllStates();
         }
     }
 }

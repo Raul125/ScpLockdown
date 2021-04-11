@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScpLockdown.DirtyWorkaround
+namespace ScpLockdown.States
 {
     public class LockdownStates
     {
@@ -44,6 +44,7 @@ namespace ScpLockdown.DirtyWorkaround
                     break;
             }
         }
+
         public void ResetAllStates()
         {
             Scp079LockedUp = false;
