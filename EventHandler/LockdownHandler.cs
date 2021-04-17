@@ -94,7 +94,7 @@ namespace ScpLockdown.EventHandlers
                     DoorVariant doorVariant = doors[i];
                     if (doorVariant.name.StartsWith("Prison"))
                     {
-                        doorVariant.ServerChangeLock(DoorLockReason.Regular079, true);
+                        doorVariant.ServerChangeLock(DoorLockReason.AdminCommand, true);
                         this.doorsdb.Add(doorVariant);
                     }
                 }
@@ -110,6 +110,7 @@ namespace ScpLockdown.EventHandlers
                 ev.Player.IsGodModeEnabled = false;
             }
         }
+
         public void OnRoundEnded(RoundEndedEventArgs ev)
         {
             runningCoroutines.ForEach(x => Timing.KillCoroutines(x));
@@ -120,18 +121,36 @@ namespace ScpLockdown.EventHandlers
         {
             if (ev.Player.Role == RoleType.Scp106 && LockdownStates.Scp106LockedUp)
             {
-                ev.IsAllowed = false;
                 ev.Player.SendToPocketDimension();
+                ev.IsAllowed = false;
             }
         }
+
         public void OnEscapingPocketDimension(EscapingPocketDimensionEventArgs ev)
         {
             if (ev.Player.Role == RoleType.Scp106 && LockdownStates.Scp106LockedUp)
             {
-                ev.IsAllowed = false;
                 ev.Player.SendToPocketDimension();
+                ev.IsAllowed = false;
             }
         }
+
+        public void OnCreatingPortal(CreatingPortalEventArgs ev)
+        {
+            if (LockdownStates.Scp106LockedUp)
+            {
+                ev.IsAllowed = false;
+            }
+        }
+
+        public void OnTeleporting(TeleportingEventArgs ev)
+        {
+            if (LockdownStates.Scp106LockedUp)
+            {
+                ev.IsAllowed = false;
+            }
+        }
+
         public void OnInteractingTesla(InteractingTeslaEventArgs ev)
         {
             if (LockdownStates.Scp079LockedUp)
@@ -139,6 +158,7 @@ namespace ScpLockdown.EventHandlers
                 ev.IsAllowed = false;
             }
         }
+
         public void OnInteractingDoor(InteractingDoorEventArgs ev)
         {
             if (LockdownStates.Scp079LockedUp)

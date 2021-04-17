@@ -1,6 +1,7 @@
 ﻿using EXPlayerEvents = Exiled.Events.Handlers.Player;
 using EXServerEvents = Exiled.Events.Handlers.Server;
 using EX079Events = Exiled.Events.Handlers.Scp079;
+using EX106Events = Exiled.Events.Handlers.Scp106;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using ScpLockdown.EventHandlers;
@@ -29,20 +30,18 @@ namespace ScpLockdown
 
         public override string Prefix { get; } = "ScpLockdown";
 
-        public override Version Version { get; } = new Version(1, 0, 2);
+        public override Version Version { get; } = new Version(1, 0, 3);
 
         public override Version RequiredExiledVersion { get; } = new Version(2, 8, 0);
 
         public override void OnEnabled()
         {
             RegisterEvents();
-
             base.OnEnabled();
         }
         public override void OnDisabled()
         {
             UnRegisterEvents();
-
             base.OnDisabled();
         }
 
@@ -56,6 +55,8 @@ namespace ScpLockdown
             EXPlayerEvents.ChangingRole += _lockdownHandler.OnChangingRole;
             EXPlayerEvents.EscapingPocketDimension += _lockdownHandler.OnEscapingPocketDimension;
             EXPlayerEvents.FailingEscapePocketDimension += _lockdownHandler.OnFailingEscapePocketDimension;
+            EX106Events.CreatingPortal += _lockdownHandler.OnCreatingPortal;
+            EX106Events.Teleporting += _lockdownHandler.OnTeleporting;
             EX079Events.InteractingDoor += _lockdownHandler.OnInteractingDoor;
             EX079Events.InteractingTesla += _lockdownHandler.OnInteractingTesla;
             EX079Events.ChangingCamera += _lockdownHandler.OnChangingCamera;
@@ -70,6 +71,8 @@ namespace ScpLockdown
             EXPlayerEvents.ChangingRole -= _lockdownHandler.OnChangingRole;
             EXPlayerEvents.EscapingPocketDimension -= _lockdownHandler.OnEscapingPocketDimension;
             EXPlayerEvents.FailingEscapePocketDimension -= _lockdownHandler.OnFailingEscapePocketDimension;
+            EX106Events.CreatingPortal -= _lockdownHandler.OnCreatingPortal;
+            EX106Events.Teleporting -= _lockdownHandler.OnTeleporting;
             EX079Events.InteractingDoor -= _lockdownHandler.OnInteractingDoor;
             EX079Events.InteractingTesla -= _lockdownHandler.OnInteractingTesla;
             EX079Events.ChangingCamera -= _lockdownHandler.OnChangingCamera;

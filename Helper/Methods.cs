@@ -152,7 +152,7 @@ namespace ScpLockdown.Helper
             for (int i = 0; i < count; i++)
             {
                 DoorVariant doorVariant = scpLockdown._lockdownHandler.doorsdb[i];
-                doorVariant.ServerChangeLock(DoorLockReason.Regular079, false);
+                doorVariant.ServerChangeLock(DoorLockReason.AdminCommand, false);
                 doorVariant.NetworkTargetState = true;
             }
         }
