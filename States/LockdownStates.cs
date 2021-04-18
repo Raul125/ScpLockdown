@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ScpLockdown.States
+﻿namespace ScpLockdown.States
 {
     public class LockdownStates
     {
@@ -13,6 +7,7 @@ namespace ScpLockdown.States
         public static bool Scp106LockedUp { get; private set; }
         public static bool Scp049LockedUp { get; private set; }
         public static bool Scp939LockedUp { get; private set; }
+        public static bool Scp173LockedUp { get; private set; }
         static LockdownStates()
         {
             Scp079LockedUp = false;
@@ -20,6 +15,7 @@ namespace ScpLockdown.States
             Scp106LockedUp = false;
             Scp049LockedUp = false;
             Scp939LockedUp = false;
+            Scp173LockedUp = false;
         }
 
         public void ToggleLockedUpState(RoleType role)
@@ -27,20 +23,23 @@ namespace ScpLockdown.States
             switch (role)
             {
                 case RoleType.Scp079:
-                    LockdownStates.Scp079LockedUp = !LockdownStates.Scp079LockedUp;
+                    Scp079LockedUp = !Scp079LockedUp;
                     break;
                 case RoleType.Scp096:
-                    LockdownStates.Scp096LockedUp = !LockdownStates.Scp096LockedUp;
+                    Scp096LockedUp = !Scp096LockedUp;
                     break;
                 case RoleType.Scp106:
-                    LockdownStates.Scp106LockedUp = !LockdownStates.Scp106LockedUp;
+                    Scp106LockedUp = !Scp106LockedUp;
                     break;
                 case RoleType.Scp049:
-                    LockdownStates.Scp049LockedUp = !LockdownStates.Scp049LockedUp;
+                    Scp049LockedUp = !Scp049LockedUp;
+                    break;
+                case RoleType.Scp173:
+                    Scp173LockedUp = !Scp173LockedUp;
                     break;
                 case RoleType.Scp93953:
                 case RoleType.Scp93989:
-                    LockdownStates.Scp939LockedUp = !LockdownStates.Scp939LockedUp;
+                    Scp939LockedUp = !Scp939LockedUp;
                     break;
             }
         }
@@ -52,6 +51,7 @@ namespace ScpLockdown.States
             Scp106LockedUp = false;
             Scp049LockedUp = false;
             Scp939LockedUp = false;
+            Scp173LockedUp = false;
         }
     }
 }

@@ -1,12 +1,11 @@
-﻿using EXPlayerEvents = Exiled.Events.Handlers.Player;
-using EXServerEvents = Exiled.Events.Handlers.Server;
-using EX079Events = Exiled.Events.Handlers.Scp079;
-using EX106Events = Exiled.Events.Handlers.Scp106;
+﻿using PlayerEv = Exiled.Events.Handlers.Player;
+using ServerEv = Exiled.Events.Handlers.Server;
+using Scp079Ev = Exiled.Events.Handlers.Scp079;
+using Scp106Ev = Exiled.Events.Handlers.Scp106;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using ScpLockdown.EventHandlers;
 using System;
-using ScpLockdown.Helper;
 
 namespace ScpLockdown
 {
@@ -14,15 +13,9 @@ namespace ScpLockdown
     {
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
 
-        private ScpLockdown()
-        {
-        }
+        public static ScpLockdown Instance { get; private set; }
 
-        public static ScpLockdown Instance { get; } = new ScpLockdown();
-
-        public RoundHandler _lockdownHandler;
-
-        public Methods methods;
+        public Handler Handler;
 
         public override string Author { get; } = "Raul125";
 
@@ -30,59 +23,60 @@ namespace ScpLockdown
 
         public override string Prefix { get; } = "ScpLockdown";
 
-        public override Version Version { get; } = new Version(1, 0, 3);
+        public override Version Version { get; } = new Version(1, 0, 4);
 
         public override Version RequiredExiledVersion { get; } = new Version(2, 8, 0);
 
         public override void OnEnabled()
         {
             RegisterEvents();
+            Instance = this;
             base.OnEnabled();
         }
         public override void OnDisabled()
         {
             UnRegisterEvents();
+            Instance = null;
             base.OnDisabled();
         }
 
         private void RegisterEvents()
         {
-            _lockdownHandler = new RoundHandler(this);
-            methods = new Methods(this);
-
-            EXServerEvents.RoundStarted += _lockdownHandler.OnRoundStart;
-            EXServerEvents.WaitingForPlayers += _lockdownHandler.OnWaitingForPlayers;
-            EXPlayerEvents.ChangingRole += _lockdownHandler.OnChangingRole;
-            EXPlayerEvents.EscapingPocketDimension += _lockdownHandler.OnEscapingPocketDimension;
-            EXPlayerEvents.FailingEscapePocketDimension += _lockdownHandler.OnFailingEscapePocketDimension;
-            EX106Events.CreatingPortal += _lockdownHandler.OnCreatingPortal;
-            EX106Events.Teleporting += _lockdownHandler.OnTeleporting;
-            EX079Events.InteractingDoor += _lockdownHandler.OnInteractingDoor;
-            EX079Events.InteractingTesla += _lockdownHandler.OnInteractingTesla;
-            EX079Events.ChangingCamera += _lockdownHandler.OnChangingCamera;
-            EX079Events.ElevatorTeleport += _lockdownHandler.OnElevatorTeleport;
-            EX079Events.StartingSpeaker += _lockdownHandler.OnStartingSpeaker;
-            EXServerEvents.RoundEnded += _lockdownHandler.OnRoundEnded;
+            Handler = new Handler(this);
+            ServerEv.RoundStarted += Handler.OnRoundStart;
+            ServerEv.WaitingForPlayers += Handler.OnWaitingForPlayers;
+            ServerEv.RoundEnded += Handler.OnRoundEnded;
+            ServerEv.RestartingRound += Handler.OnRoundRestarting;
+            PlayerEv.ChangingRole += Handler.OnChangingRole;
+            PlayerEv.EscapingPocketDimension += Handler.OnEscapingPocketDimension;
+            PlayerEv.FailingEscapePocketDimension += Handler.OnFailingEscapePocketDimension;
+            Scp106Ev.CreatingPortal += Handler.OnCreatingPortal;
+            Scp106Ev.Teleporting += Handler.OnTeleporting;
+            PlayerEv.InteractingDoor += Handler.OnInteractingDoor;
+            Scp079Ev.InteractingTesla += Handler.OnInteractingTesla;
+            Scp079Ev.ChangingCamera += Handler.OnChangingCamera;
+            Scp079Ev.ElevatorTeleport += Handler.OnElevatorTeleport;
+            Scp079Ev.StartingSpeaker += Handler.OnStartingSpeaker;
         }
+
         private void UnRegisterEvents()
         {
-            EXServerEvents.RoundStarted -= _lockdownHandler.OnRoundStart;
-            EXServerEvents.WaitingForPlayers -= _lockdownHandler.OnWaitingForPlayers;
-            EXPlayerEvents.ChangingRole -= _lockdownHandler.OnChangingRole;
-            EXPlayerEvents.EscapingPocketDimension -= _lockdownHandler.OnEscapingPocketDimension;
-            EXPlayerEvents.FailingEscapePocketDimension -= _lockdownHandler.OnFailingEscapePocketDimension;
-            EX106Events.CreatingPortal -= _lockdownHandler.OnCreatingPortal;
-            EX106Events.Teleporting -= _lockdownHandler.OnTeleporting;
-            EX079Events.InteractingDoor -= _lockdownHandler.OnInteractingDoor;
-            EX079Events.InteractingTesla -= _lockdownHandler.OnInteractingTesla;
-            EX079Events.ChangingCamera -= _lockdownHandler.OnChangingCamera;
-            EX079Events.ElevatorTeleport -= _lockdownHandler.OnElevatorTeleport;
-            EX079Events.StartingSpeaker -= _lockdownHandler.OnStartingSpeaker;
-            EXServerEvents.RoundEnded -= _lockdownHandler.OnRoundEnded;
-
-            _lockdownHandler.ResetAllStates();
-            _lockdownHandler = null;
-            methods = null;
+            ServerEv.RoundStarted -= Handler.OnRoundStart;
+            ServerEv.WaitingForPlayers -= Handler.OnWaitingForPlayers;
+            ServerEv.RoundEnded -= Handler.OnRoundEnded;
+            ServerEv.RestartingRound -= Handler.OnRoundRestarting;
+            PlayerEv.ChangingRole -= Handler.OnChangingRole;
+            PlayerEv.EscapingPocketDimension -= Handler.OnEscapingPocketDimension;
+            PlayerEv.FailingEscapePocketDimension -= Handler.OnFailingEscapePocketDimension;
+            Scp106Ev.CreatingPortal -= Handler.OnCreatingPortal;
+            Scp106Ev.Teleporting -= Handler.OnTeleporting;
+            PlayerEv.InteractingDoor -= Handler.OnInteractingDoor;
+            Scp079Ev.InteractingTesla -= Handler.OnInteractingTesla;
+            Scp079Ev.ChangingCamera -= Handler.OnChangingCamera;
+            Scp079Ev.ElevatorTeleport -= Handler.OnElevatorTeleport;
+            Scp079Ev.StartingSpeaker -= Handler.OnStartingSpeaker;
+            Handler.ResetAllStates();
+            Handler = null;
         }
     }
 }

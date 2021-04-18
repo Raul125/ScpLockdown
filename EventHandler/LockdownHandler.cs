@@ -11,37 +11,34 @@ using System.Collections.ObjectModel;
 
 namespace ScpLockdown.EventHandlers
 {
-    public class RoundHandler
+    public class Handler
     {
-        public LockdownStates _lockdownStates;
-        public List<KeyValuePair<Player, CoroutineHandle>> larryCoroutines;
-        public List<CoroutineHandle> runningCoroutines;
         public ScpLockdown plugin;
-        public List<DoorVariant> doorsdb { get; } = new List<DoorVariant>();
+        public LockdownStates _lockdownStates;
+        public List<CoroutineHandle> runningCoroutines;
+        public List<DoorVariant> Doorsdb { get; } = new List<DoorVariant>();
 
-        public RoundHandler(ScpLockdown plugin)
+        public Handler(ScpLockdown plugin)
         {
             this.plugin = plugin;
             _lockdownStates = new LockdownStates();
             runningCoroutines = new List<CoroutineHandle>();
-            larryCoroutines = new List<KeyValuePair<Player, CoroutineHandle>>();
         }
 
         public void OnRoundStart()
         {
             Dictionary<RoleType, int> configScpList = new Dictionary<RoleType, int>();
 
-            if (plugin.Config.ClassDLock != 0)
+            if (plugin.Config.ClassDLock > 0)
             {
-                Timing.RunCoroutine(plugin.methods.OpenDoorsAfterTime());
+                runningCoroutines.Add(Timing.RunCoroutine(Methods.OpenDoorsAfterTime()));
             }
 
-            if (plugin.Config.CassieTime != 0)
+            if (plugin.Config.CassieTime > 0)
             {
-                Timing.RunCoroutine(plugin.methods.CassieMsg());
+                runningCoroutines.Add(Timing.RunCoroutine(Methods.CassieMsg()));
             }
 
-            //Filter unique RoleTypes
             foreach (var entry in plugin.Config.AffectedScps)
             {
                 if (!configScpList.Select(x => x.Key).Contains(entry.Key))
@@ -50,7 +47,7 @@ namespace ScpLockdown.EventHandlers
                 }
             }
 
-            runningCoroutines.Add(Timing.CallDelayed(1, () =>
+            Timing.CallDelayed(1, () =>
             {
                 foreach (KeyValuePair<RoleType, int> scp in configScpList)
                 {
@@ -59,34 +56,35 @@ namespace ScpLockdown.EventHandlers
                     switch (scp.Key)
                     {
                         case RoleType.Scp079:
-                            plugin.methods.Lockdown079(scp);
+                            runningCoroutines.Add(Timing.RunCoroutine(Methods.Unlock079s(scp.Value)));
                             break;
                         case RoleType.Scp173:
-                            plugin.methods.Lockdown173(scp);
+                            Methods.Lockdown173(scp);
                             break;
                         case RoleType.Scp106:
-                            plugin.methods.Lockdown106(scp);
+                            Methods.Lockdown106(scp);
                             break;
                         case RoleType.Scp049:
-                            plugin.methods.Lockdown049(scp);
+                            Methods.Lockdown049(scp);
                             break;
                         case RoleType.Scp096:
-                            plugin.methods.Lockdown096(scp);
+                            Methods.Lockdown096(scp);
                             break;
                         case RoleType.Scp93953:
                         case RoleType.Scp93989:
-                            plugin.methods.Lockdown939(scp);
+                            Methods.Lockdown939(scp);
                             break;
                     }
                 }
-            }));
+            });
         }
 
         public void OnWaitingForPlayers()
         {
-            if (plugin.Config.ClassDLock != 0)
+            ResetAllStates();
+            if (plugin.Config.ClassDLock > 0)
             {
-                this.doorsdb.Clear();
+                this.Doorsdb.Clear();
                 ReadOnlyCollection<DoorVariant> doors = Exiled.API.Features.Map.Doors;
                 int num = doors.Count<DoorVariant>();
                 for (int i = 0; i < num; i++)
@@ -95,7 +93,7 @@ namespace ScpLockdown.EventHandlers
                     if (doorVariant.name.StartsWith("Prison"))
                     {
                         doorVariant.ServerChangeLock(DoorLockReason.AdminCommand, true);
-                        this.doorsdb.Add(doorVariant);
+                        this.Doorsdb.Add(doorVariant);
                     }
                 }
             }
@@ -103,20 +101,43 @@ namespace ScpLockdown.EventHandlers
 
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            if (larryCoroutines.Select((x) => x.Key).Contains(ev.Player))
+            if (LockdownStates.Scp106LockedUp && ev.Player.Role == RoleType.Scp106)
             {
-                larryCoroutines.Where((x) => x.Key == ev.Player).Select((x) => x.Value).ToList().ForEach((x) => Timing.KillCoroutines(x));
-                larryCoroutines.RemoveAt(larryCoroutines.FindIndex((x) => x.Key == ev.Player));
                 ev.Player.IsGodModeEnabled = false;
+            }
+
+            // This makes Scp106 lockdown compatible with scpswap
+            if (LockdownStates.Scp106LockedUp == true && ev.NewRole == RoleType.Scp106)
+            {
+                Timing.CallDelayed(1f, () =>
+                {
+                    if (ev.Player.Role == RoleType.Scp106)
+                    {
+                        Methods.LockSingle106(ev.Player);
+                    }
+                });
             }
         }
 
         public void OnRoundEnded(RoundEndedEventArgs ev)
         {
-            runningCoroutines.ForEach(x => Timing.KillCoroutines(x));
-            larryCoroutines.Select((x) => x.Value).ToList().ForEach((x) => Timing.KillCoroutines(x));
+            foreach (CoroutineHandle coroutine in runningCoroutines)
+            {
+                Timing.KillCoroutines(coroutine);
+            }
             runningCoroutines.Clear();
         }
+
+        public void OnRoundRestarting()
+        {
+            // This prevents us from having unwanted coroutines running
+            foreach (CoroutineHandle coroutine in runningCoroutines)
+            {
+                Timing.KillCoroutines(coroutine);
+            }
+            runningCoroutines.Clear();
+        }
+
         public void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev)
         {
             if (ev.Player.Role == RoleType.Scp106 && LockdownStates.Scp106LockedUp)
@@ -161,7 +182,8 @@ namespace ScpLockdown.EventHandlers
 
         public void OnInteractingDoor(InteractingDoorEventArgs ev)
         {
-            if (LockdownStates.Scp079LockedUp)
+            // Using Player event because 079 event isn't working, idk why
+            if (LockdownStates.Scp079LockedUp && ev.Player.Role == RoleType.Scp079)
             {
                 ev.IsAllowed = false;
             }

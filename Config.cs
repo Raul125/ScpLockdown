@@ -1,5 +1,4 @@
 ﻿using Exiled.API.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -22,7 +21,7 @@ namespace ScpLockdown
         };
 
         [Description("Can the Scp-079 use the cameras while is in lockdown?")]
-        public bool Scp079Camera { get; private set; } = false;
+        public bool Scp079Camera { get; private set; } = true;
 
         [Description("Time of Class-D locked in his cells, 0 is disabled")]
         public int ClassDLock { get; private set; } = 0;
