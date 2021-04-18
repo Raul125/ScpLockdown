@@ -28,7 +28,7 @@ scp_lockdown:
     Scp93989: 60
     Scp93953: 60
   # Can the Scp-079 use the cameras while is in lockdown?
-  scp079_camera: false
+  scp079_camera: true
   # Time of Class-D locked in his cells, 0 is disabled
   class_d_lock: 0
   # Displayed to the scps when his lockdown is finished.
