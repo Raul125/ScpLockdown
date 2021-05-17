@@ -1,5 +1,4 @@
-﻿using Exiled.API.Features;
-using ScpLockdown.Helper;
+﻿using ScpLockdown.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -197,7 +196,7 @@ namespace ScpLockdown.EventHandlers
             }
         }
 
-        public void OnElevatorTeleport(ElevatorTeleportEventArgs ev)
+        public void OnElevatorTeleport(ElevatorTeleportingEventArgs ev)
         {
             if (LockdownStates.Scp079LockedUp && !plugin.Config.Scp079Camera)
             {

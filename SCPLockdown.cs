@@ -23,9 +23,9 @@ namespace ScpLockdown
 
         public override string Prefix { get; } = "ScpLockdown";
 
-        public override Version Version { get; } = new Version(1, 0, 4);
+        public override Version Version { get; } = new Version(1, 0, 5);
 
-        public override Version RequiredExiledVersion { get; } = new Version(2, 8, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 10, 0);
 
         public override void OnEnabled()
         {
@@ -55,7 +55,7 @@ namespace ScpLockdown
             PlayerEv.InteractingDoor += Handler.OnInteractingDoor;
             Scp079Ev.InteractingTesla += Handler.OnInteractingTesla;
             Scp079Ev.ChangingCamera += Handler.OnChangingCamera;
-            Scp079Ev.ElevatorTeleport += Handler.OnElevatorTeleport;
+            Scp079Ev.ElevatorTeleporting += Handler.OnElevatorTeleport;
             Scp079Ev.StartingSpeaker += Handler.OnStartingSpeaker;
         }
 
@@ -73,7 +73,7 @@ namespace ScpLockdown
             PlayerEv.InteractingDoor -= Handler.OnInteractingDoor;
             Scp079Ev.InteractingTesla -= Handler.OnInteractingTesla;
             Scp079Ev.ChangingCamera -= Handler.OnChangingCamera;
-            Scp079Ev.ElevatorTeleport -= Handler.OnElevatorTeleport;
+            Scp079Ev.ElevatorTeleporting -= Handler.OnElevatorTeleport;
             Scp079Ev.StartingSpeaker -= Handler.OnStartingSpeaker;
             Handler.ResetAllStates();
             Handler = null;

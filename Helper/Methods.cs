@@ -4,7 +4,6 @@ using Interactables.Interobjects.DoorUtils;
 using MEC;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace ScpLockdown.Helper
 {
@@ -12,7 +11,7 @@ namespace ScpLockdown.Helper
     {
         public static void Lockdown106(KeyValuePair<RoleType, int> scp)
         {
-            foreach (var player in Player.List.Where((e) => e.Role == RoleType.Scp106))
+            foreach (var player in Player.List.Where(e => e.Role == RoleType.Scp106))
             {
                 player.SendToPocketDimension();
                 player.IsGodModeEnabled = true;
@@ -29,7 +28,7 @@ namespace ScpLockdown.Helper
         public static IEnumerator<float> Unlock106s(int time)
         {
             yield return Timing.WaitForSeconds(time);
-            var pos = RoleType.Scp106.GetRandomSpawnPoint();
+            var pos = Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.Scp106);
             foreach (var player in Player.List.Where(e => e.Role == RoleType.Scp106))
             {
                 player.Position = pos;
