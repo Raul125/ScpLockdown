@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Interfaces;
+using Exiled.API.Enums;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -20,8 +21,15 @@ namespace ScpLockdown
             { RoleType.Scp93953, 60 }
         };
 
-        [Description("Can the Scp-079 use the cameras while is in lockdown?")]
+        [Description("Can the Scp-079 use/switch cameras while is in lockdown?")]
         public bool Scp079Camera { get; private set; } = true;
+
+        [Description("Use this if you want to lock any doors, if you enabled a lockdown of an scp in AffectedScps cfg you don't need to enable their doors lockdown here.")]
+        public Dictionary<DoorType, int> LockedDoors { get; set; } = new Dictionary<DoorType, int>()
+        {
+            { DoorType.CheckpointLczA, 60 },
+            { DoorType.CheckpointLczB, 60 }
+        };
 
         [Description("Time of Class-D locked in his cells, 0 is disabled")]
         public int ClassDLock { get; private set; } = 0;

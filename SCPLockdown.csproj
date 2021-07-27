@@ -47,13 +47,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\refs\0Harmony.dll</HintPath>
-    </Reference>
     <Reference Include="Accessibility" />
-    <Reference Include="AmplifyBloom">
-      <HintPath>..\..\refs\AmplifyBloom.dll</HintPath>
-    </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\refs\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
@@ -81,26 +75,29 @@
     <Reference Include="DissonanceVoip">
       <HintPath>..\..\refs\DissonanceVoip.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.API">
-      <HintPath>..\..\refs\Exiled.API.dll</HintPath>
+    <Reference Include="Exiled.API, Version=2.11.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.2.11.1\lib\net472\Exiled.API.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.CreditTags">
-      <HintPath>..\..\refs\Exiled.CreditTags.dll</HintPath>
+    <Reference Include="Exiled.Bootstrap, Version=2.11.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.2.11.1\lib\net472\Exiled.Bootstrap.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.CustomItems">
-      <HintPath>..\..\refs\Exiled.CustomItems.dll</HintPath>
+    <Reference Include="Exiled.CreditTags, Version=2.11.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.2.11.1\lib\net472\Exiled.CreditTags.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Events">
-      <HintPath>..\..\refs\Exiled.Events.dll</HintPath>
+    <Reference Include="Exiled.CustomItems, Version=2.11.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.2.11.1\lib\net472\Exiled.CustomItems.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Loader">
-      <HintPath>..\..\refs\Exiled.Loader.dll</HintPath>
+    <Reference Include="Exiled.Events, Version=2.11.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.2.11.1\lib\net472\Exiled.Events.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Permissions">
-      <HintPath>..\..\refs\Exiled.Permissions.dll</HintPath>
+    <Reference Include="Exiled.Loader, Version=2.11.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.2.11.1\lib\net472\Exiled.Loader.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Updater">
-      <HintPath>..\..\refs\Exiled.Updater.dll</HintPath>
+    <Reference Include="Exiled.Permissions, Version=2.11.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.2.11.1\lib\net472\Exiled.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.2.11.1\lib\net472\Exiled.Updater.dll</HintPath>
     </Reference>
     <Reference Include="Facepunch.Steamworks.Posix">
       <HintPath>..\..\refs\Facepunch.Steamworks.Posix.dll</HintPath>
@@ -405,6 +402,10 @@
     <Reference Include="zxing.unity">
       <HintPath>..\..\refs\zxing.unity.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

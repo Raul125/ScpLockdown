@@ -7,6 +7,8 @@ using Exiled.Events.EventArgs;
 using ScpLockdown.States;
 using Interactables.Interobjects.DoorUtils;
 using System.Collections.ObjectModel;
+using Exiled.API.Features;
+using Exiled.API.Extensions;
 
 namespace ScpLockdown.EventHandlers
 {
@@ -36,6 +38,16 @@ namespace ScpLockdown.EventHandlers
             if (plugin.Config.CassieTime > 0)
             {
                 runningCoroutines.Add(Timing.RunCoroutine(Methods.CassieMsg()));
+            }
+
+            foreach (var doortype in plugin.Config.LockedDoors)
+            {
+                var door = Map.Doors.First(x => x.Type() == doortype.Key);
+                door.ServerChangeLock(DoorLockReason.AdminCommand, true);
+                runningCoroutines.Add(Timing.CallDelayed(doortype.Value, () =>
+                {
+                    door.ServerChangeLock(DoorLockReason.AdminCommand, false);
+                }));
             }
 
             foreach (var entry in plugin.Config.AffectedScps)
@@ -84,7 +96,7 @@ namespace ScpLockdown.EventHandlers
             if (plugin.Config.ClassDLock > 0)
             {
                 this.Doorsdb.Clear();
-                ReadOnlyCollection<DoorVariant> doors = Exiled.API.Features.Map.Doors;
+                ReadOnlyCollection<DoorVariant> doors = Map.Doors;
                 int num = doors.Count<DoorVariant>();
                 for (int i = 0; i < num; i++)
                 {

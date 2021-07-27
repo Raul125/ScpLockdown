@@ -23,9 +23,9 @@ namespace ScpLockdown
 
         public override string Prefix { get; } = "ScpLockdown";
 
-        public override Version Version { get; } = new Version(1, 0, 5);
+        public override Version Version { get; } = new Version(1, 0, 6);
 
-        public override Version RequiredExiledVersion { get; } = new Version(2, 10, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(2, 11, 1);
 
         public override void OnEnabled()
         {
