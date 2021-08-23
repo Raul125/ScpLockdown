@@ -17,7 +17,7 @@ namespace ScpLockdown.EventHandlers
         public ScpLockdown plugin;
         public LockdownStates _lockdownStates;
         public List<CoroutineHandle> runningCoroutines;
-        public List<DoorVariant> Doorsdb { get; } = new List<DoorVariant>();
+        public List<Exiled.API.Features.Door> Doorsdb { get; } = new List<Exiled.API.Features.Door>();
 
         public Handler(ScpLockdown plugin)
         {
@@ -42,11 +42,11 @@ namespace ScpLockdown.EventHandlers
 
             foreach (var doortype in plugin.Config.LockedDoors)
             {
-                var door = Map.Doors.First(x => x.Type() == doortype.Key);
-                door.ServerChangeLock(DoorLockReason.AdminCommand, true);
+                var door = Map.Doors.First(x => x.Type == doortype.Key);
+                door.Base.ServerChangeLock(DoorLockReason.AdminCommand, true);
                 runningCoroutines.Add(Timing.CallDelayed(doortype.Value, () =>
                 {
-                    door.ServerChangeLock(DoorLockReason.AdminCommand, false);
+                    door.Base.ServerChangeLock(DoorLockReason.AdminCommand, false);
                 }));
             }
 
@@ -96,14 +96,14 @@ namespace ScpLockdown.EventHandlers
             if (plugin.Config.ClassDLock > 0)
             {
                 this.Doorsdb.Clear();
-                ReadOnlyCollection<DoorVariant> doors = Map.Doors;
-                int num = doors.Count<DoorVariant>();
+                ReadOnlyCollection<Exiled.API.Features.Door> doors = Map.Doors;
+                int num = doors.Count();
                 for (int i = 0; i < num; i++)
                 {
-                    DoorVariant doorVariant = doors[i];
-                    if (doorVariant.name.StartsWith("Prison"))
+                    Exiled.API.Features.Door doorVariant = doors[i];
+                    if (doorVariant.Base.name.StartsWith("Prison"))
                     {
-                        doorVariant.ServerChangeLock(DoorLockReason.AdminCommand, true);
+                        doorVariant.Base.ServerChangeLock(DoorLockReason.AdminCommand, true);
                         this.Doorsdb.Add(doorVariant);
                     }
                 }

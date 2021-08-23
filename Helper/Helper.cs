@@ -13,16 +13,16 @@ namespace ScpLockdown.Helper
 
         public static void SendToPocketDimension(this Player player) => player.Position = PocketDimensionPosition;
 
-        public static DoorVariant GetClosestDoor(this IEnumerable<DoorVariant> doors, DoorVariant relativeDoor, bool onlyHeavyDoors = false, IEnumerable<DoorVariant> ignoreDoors = null)
+        public static Exiled.API.Features.Door GetClosestDoor(this IEnumerable<Exiled.API.Features.Door> doors, Exiled.API.Features.Door relativeDoor, bool onlyHeavyDoors = false, IEnumerable<Exiled.API.Features.Door> ignoreDoors = null)
         {
-            ignoreDoors = ignoreDoors ?? Enumerable.Empty<DoorVariant>();
+            ignoreDoors = ignoreDoors ?? Enumerable.Empty<Exiled.API.Features.Door>();
 
-            DoorVariant result = null;
+            Exiled.API.Features.Door result = null;
 
             float closestDistanceSqr = Mathf.Infinity;
-            Vector3 currentPosition = relativeDoor.gameObject.transform.position;
+            Vector3 currentPosition = relativeDoor.Base.gameObject.transform.position;
 
-            foreach (DoorVariant potentialDoor in doors)
+            foreach (Exiled.API.Features.Door potentialDoor in doors)
             {
                 if (onlyHeavyDoors)
                     continue;
@@ -31,7 +31,7 @@ namespace ScpLockdown.Helper
                 if (potentialDoor == relativeDoor)
                     continue;
 
-                Vector3 directionToTarget = potentialDoor.gameObject.transform.position - currentPosition;
+                Vector3 directionToTarget = potentialDoor.Base.gameObject.transform.position - currentPosition;
                 float dSqrToTarget = directionToTarget.sqrMagnitude;
 
                 if (dSqrToTarget < closestDistanceSqr)
@@ -44,23 +44,23 @@ namespace ScpLockdown.Helper
             return result;
         }
 
-        public static DoorVariant GetClosestDoor(this IEnumerable<DoorVariant> doors, Room relativeRoom, bool onlyHeavyDoors = false, IEnumerable<DoorVariant> ignoreDoors = null)
+        public static Exiled.API.Features.Door GetClosestDoor(this IEnumerable<Exiled.API.Features.Door> doors, Room relativeRoom, bool onlyHeavyDoors = false, IEnumerable<Exiled.API.Features.Door> ignoreDoors = null)
         {
-            ignoreDoors = ignoreDoors ?? Enumerable.Empty<DoorVariant>();
+            ignoreDoors = ignoreDoors ?? Enumerable.Empty<Exiled.API.Features.Door>();
 
-            DoorVariant result = null;
+            Exiled.API.Features.Door result = null;
 
             float closestDistanceSqr = Mathf.Infinity;
             Vector3 currentPosition = relativeRoom.Transform.position;
 
-            foreach (DoorVariant potentialDoor in doors)
+            foreach (Exiled.API.Features.Door potentialDoor in doors)
             {
                 if (onlyHeavyDoors)
                     continue;
                 if (ignoreDoors.Contains(potentialDoor))
                     continue;
 
-                Vector3 directionToTarget = potentialDoor.gameObject.transform.position - currentPosition;
+                Vector3 directionToTarget = potentialDoor.Base.gameObject.transform.position - currentPosition;
                 float dSqrToTarget = directionToTarget.sqrMagnitude;
 
                 if (dSqrToTarget < closestDistanceSqr)
