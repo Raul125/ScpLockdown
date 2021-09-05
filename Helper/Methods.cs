@@ -34,9 +34,9 @@ namespace ScpLockdown.Helper
             {
                 player.Position = pos;
                 player.IsGodModeEnabled = false;
-                ScpLockdown.Instance.Handler._lockdownStates.ToggleLockedUpState(RoleType.Scp106);
                 player.ShowHint(ScpLockdown.Instance.Config.CBHint, 5);
             }
+            ScpLockdown.Instance.Handler._lockdownStates.ToggleLockedUpState(RoleType.Scp106);
         }
 
         public static IEnumerator<float> Unlock079s(int time)
