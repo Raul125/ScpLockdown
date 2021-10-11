@@ -1,5 +1,4 @@
 ﻿using Exiled.API.Features;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,6 +9,18 @@ namespace ScpLockdown.Helper
     {
         private static readonly Vector3 PocketDimensionPosition = new Vector3(0, -1998.67f, 2);
         public static void SendToPocketDimension(this Player player) => player.Position = PocketDimensionPosition;
+
+        public static void SendContainmentBreachText(this Player player)
+        {
+            if (ScpLockdown.Instance.Config.UseHints)
+            {
+                player.ShowHint(ScpLockdown.Instance.Config.ScpsText[player.Role], 10);
+            }
+            else
+            {
+                player.Broadcast(10, ScpLockdown.Instance.Config.ScpsText[player.Role]);
+            }
+        }
 
         public static Door GetClosestDoor(this IEnumerable<Door> doors, Door relativeDoor, bool onlyHeavyDoors = false, IEnumerable<Door> ignoreDoors = null)
         {

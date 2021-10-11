@@ -13,7 +13,7 @@ namespace ScpLockdown
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
         public override string Author { get; } = "Raul125";
         public override string Name { get; } = "ScpLockdown";
-        public override string Prefix { get; } = "ScpLockdown";
+        public override string Prefix { get; } = "SCPLD";
         public override Version Version { get; } = new Version(2, 0, 0);
         public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
         public static ScpLockdown Instance { get; private set; }
@@ -47,7 +47,6 @@ namespace ScpLockdown
             PlayerEv.ChangingRole += EventHandlers.OnChangingRole;
             PlayerEv.EscapingPocketDimension += EventHandlers.OnEscapingPocketDimension;
             PlayerEv.FailingEscapePocketDimension += EventHandlers.OnFailingEscapePocketDimension;
-            PlayerEv.InteractingDoor += EventHandlers.OnInteractingDoor;
 
             // Scp106 Events
             Scp106Ev.CreatingPortal += EventHandlers.OnCreatingPortal;
@@ -58,6 +57,7 @@ namespace ScpLockdown
             Scp079Ev.ChangingCamera += EventHandlers.OnChangingCamera;
             Scp079Ev.ElevatorTeleporting += EventHandlers.OnElevatorTeleport;
             Scp079Ev.StartingSpeaker += EventHandlers.OnStartingSpeaker;
+            Scp079Ev.TriggeringDoor += EventHandlers.OnInteractingDoor;
         }
 
         private void UnRegisterEvents()
@@ -72,7 +72,6 @@ namespace ScpLockdown
             PlayerEv.ChangingRole -= EventHandlers.OnChangingRole;
             PlayerEv.EscapingPocketDimension -= EventHandlers.OnEscapingPocketDimension;
             PlayerEv.FailingEscapePocketDimension -= EventHandlers.OnFailingEscapePocketDimension;
-            PlayerEv.InteractingDoor -= EventHandlers.OnInteractingDoor;
 
             // Scp106 Events
             Scp106Ev.CreatingPortal -= EventHandlers.OnCreatingPortal;
@@ -83,8 +82,8 @@ namespace ScpLockdown
             Scp079Ev.ChangingCamera -= EventHandlers.OnChangingCamera;
             Scp079Ev.ElevatorTeleporting -= EventHandlers.OnElevatorTeleport;
             Scp079Ev.StartingSpeaker -= EventHandlers.OnStartingSpeaker;
+            Scp079Ev.TriggeringDoor -= EventHandlers.OnInteractingDoor;
 
-            EventHandlers.ResetAllStates();
             EventHandlers = null;
         }
     }

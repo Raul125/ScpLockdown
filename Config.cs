@@ -3,7 +3,6 @@ using Exiled.API.Enums;
 using System.Collections.Generic;
 using System.ComponentModel;
 using YamlDotNet.Serialization;
-using System.Linq;
 
 namespace ScpLockdown
 {
@@ -60,7 +59,7 @@ namespace ScpLockdown
         public Dictionary<RoleType, int> CheckedAffectedScps { get; set; } = new Dictionary<RoleType, int>();
 
         [YamlIgnore]
-        public Dictionary<DoorType, int> CheckedLockedDoors { get; set; } = new Dictionary<DoorType, int>();
+        public Dictionary<DoorType, int> CheckedAffectedDoors { get; set; } = new Dictionary<DoorType, int>();
 
         public void PreventDuplicatedCfgs()
         {
@@ -74,9 +73,9 @@ namespace ScpLockdown
 
             foreach (var entry in AffectedDoors)
             {
-                if (!CheckedLockedDoors.ContainsKey(entry.Key))
+                if (!CheckedAffectedDoors.ContainsKey(entry.Key))
                 {
-                    CheckedLockedDoors.Add(entry.Key, entry.Value);
+                    CheckedAffectedDoors.Add(entry.Key, entry.Value);
                 }
             }
         }
