@@ -150,3 +150,5 @@ bin/Release/Assembly-CSharp-firstpass.dll
 *.jpg
 *.p7s
 *.nupkg
+obj/Debug/.NETFramework,Version=v4.7.2.AssemblyAttributes.cs
+obj/Debug/SCPLockdown.csproj.FileListAbsolute.txt
