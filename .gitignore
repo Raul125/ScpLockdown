@@ -144,3 +144,10 @@ bin/Release/Assembly-CSharp-firstpass.dll
 .vs/SCPLockdown/v16/.suo
 .vs/SCPLockdown/v16/.suo
 .vs/SCPLockdown/v16/.suo
+*.force
+*.cache
+*.xml
+*.dll
+*.jpg
+*.nupkg
+*.p7s
