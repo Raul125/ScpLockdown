@@ -2,13 +2,14 @@
 {
     public class LockdownStates
     {
-        public static bool Scp079LockedUp { get; private set; }
-        public static bool Scp096LockedUp { get; private set; }
-        public static bool Scp106LockedUp { get; private set; }
-        public static bool Scp049LockedUp { get; private set; }
-        public static bool Scp939LockedUp { get; private set; }
-        public static bool Scp173LockedUp { get; private set; }
-        static LockdownStates()
+        public bool Scp079LockedUp { get; private set; }
+        public bool Scp096LockedUp { get; private set; }
+        public bool Scp106LockedUp { get; private set; }
+        public bool Scp049LockedUp { get; private set; }
+        public bool Scp939LockedUp { get; private set; }
+        public bool Scp173LockedUp { get; private set; }
+
+        public LockdownStates()
         {
             Scp079LockedUp = false;
             Scp096LockedUp = false;

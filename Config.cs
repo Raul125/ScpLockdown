@@ -2,6 +2,7 @@
 using Exiled.API.Enums;
 using System.Collections.Generic;
 using System.ComponentModel;
+using YamlDotNet.Serialization;
 
 namespace ScpLockdown
 {
@@ -24,23 +25,59 @@ namespace ScpLockdown
         [Description("Can the Scp-079 use/switch cameras while is in lockdown?")]
         public bool Scp079Camera { get; private set; } = true;
 
-        [Description("Use this if you want to lock any doors, if you enabled a lockdown of an scp in AffectedScps cfg you don't need to enable their doors lockdown here.")]
-        public Dictionary<DoorType, int> LockedDoors { get; set; } = new Dictionary<DoorType, int>()
+        [Description("Use this if you want to lock any doors, if you enabled a lockdown of an scp in AffectedScps cfg you don't need to enable their doors lockdown here, Use PrisonDoor to lock class-d cells.")]
+        public Dictionary<DoorType, int> AffectedDoors { get; set; } = new Dictionary<DoorType, int>()
         {
             { DoorType.CheckpointLczA, 60 },
-            { DoorType.CheckpointLczB, 60 }
+            { DoorType.CheckpointLczB, 60 },
+            { DoorType.PrisonDoor, 60 }
         };
 
-        [Description("Time of Class-D locked in his cells, 0 is disabled")]
-        public int ClassDLock { get; private set; } = 0;
+        [Description("Use this if you want send cassies with a specified timing.")]
+        public Dictionary<string, int> Cassies { get; set; } = new Dictionary<string, int>()
+        {
+            { "containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols", 60 },
+            { "containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols", 120 }
+        };
+
+        [Description("If enabled, the scps will see a hint, else they will see a broadcast.")]
+        public bool UseHints = true;
 
         [Description("Displayed to the scps when his lockdown is finished.")]
-        public string CBHint { get; private set; } = "Containment Breach!";
+        public Dictionary<RoleType, string> ScpsText { get; set; } = new Dictionary<RoleType, string>()
+        {
+            { RoleType.Scp079, "Containment Breach!" },
+            { RoleType.Scp173, "Containment Breach!" },
+            { RoleType.Scp096, "Containment Breach!" },
+            { RoleType.Scp106, "Containment Breach!" },
+            { RoleType.Scp049, "Containment Breach!" },
+            { RoleType.Scp93989, "Containment Breach!" },
+            { RoleType.Scp93953, "Containment Breach!" }
+        };
 
-        [Description("Custom Cassie for simulating containment breach announce.")]
-        public string CassieMsg { get; private set; } = "containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols";
+        [YamlIgnore]
+        public Dictionary<RoleType, int> CheckedAffectedScps { get; set; } = new Dictionary<RoleType, int>();
 
-        [Description("Cassie Time to be played, 0 to disable it")]
-        public int CassieTime { get; private set; } = 60;
+        [YamlIgnore]
+        public Dictionary<DoorType, int> CheckedAffectedDoors { get; set; } = new Dictionary<DoorType, int>();
+
+        public void PreventDuplicatedCfgs()
+        {
+            foreach (var entry in AffectedScps)
+            {
+                if (!CheckedAffectedScps.ContainsKey(entry.Key))
+                {
+                    CheckedAffectedScps.Add(entry.Key, entry.Value);
+                }
+            }
+
+            foreach (var entry in AffectedDoors)
+            {
+                if (!CheckedAffectedDoors.ContainsKey(entry.Key))
+                {
+                    CheckedAffectedDoors.Add(entry.Key, entry.Value);
+                }
+            }
+        }
     }
 }

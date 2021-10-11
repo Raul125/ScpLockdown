@@ -8,156 +8,151 @@ using Exiled.API.Extensions;
 
 namespace ScpLockdown.Helper
 {
-    public static class Methods
+    public class Methods
     {
-        public static void Lockdown106(KeyValuePair<RoleType, int> scp)
+        private ScpLockdown plugin;
+        public Methods(ScpLockdown scplockdown)
         {
-            foreach (var player in Player.List.Where(e => e.Role == RoleType.Scp106))
+            plugin = scplockdown;
+        }
+
+        public void Lockdown106(KeyValuePair<RoleType, int> scp)
+        {
+            foreach (var player in Player.List.Where(x => x.Role == RoleType.Scp106))
             {
                 player.SendToPocketDimension();
-                player.IsGodModeEnabled = true;
             }
-            ScpLockdown.Instance.Handler.runningCoroutines.Add(Timing.RunCoroutine(Unlock106s(scp.Value)));
+
+            plugin.EventHandlers.RunningCoroutines.Add(Timing.RunCoroutine(Unlock106s(scp.Value)));
         }
 
-        public static void LockSingle106(Player ply)
-        {
-            ply.IsGodModeEnabled = true;
-            ply.SendToPocketDimension();
-        }
-
-        public static IEnumerator<float> Unlock106s(int time)
+        public IEnumerator<float> Unlock106s(int time)
         {
             yield return Timing.WaitForSeconds(time);
             var pos = RoleType.Scp106.GetRandomSpawnProperties().Item1;
-            foreach (var player in Player.List.Where(e => e.Role == RoleType.Scp106))
+            plugin.EventHandlers.LockdownStates.ToggleLockedUpState(RoleType.Scp106);
+            foreach (var player in Player.List.Where(x => x.Role == RoleType.Scp106))
             {
                 player.Position = pos;
-                player.IsGodModeEnabled = false;
-                player.ShowHint(ScpLockdown.Instance.Config.CBHint, 5);
+                player.SendContainmentBreachText();
             }
-            ScpLockdown.Instance.Handler._lockdownStates.ToggleLockedUpState(RoleType.Scp106);
         }
 
-        public static IEnumerator<float> Unlock079s(int time)
+        public IEnumerator<float> Unlock079(int time)
         {
             yield return Timing.WaitForSeconds(time);
+            plugin.EventHandlers.LockdownStates.ToggleLockedUpState(RoleType.Scp079);
             foreach (var player in Player.List.Where(x => x.Role == RoleType.Scp079))
             {
-                player.ShowHint(ScpLockdown.Instance.Config.CBHint, 5);
+                player.SendContainmentBreachText();
             }
-            ScpLockdown.Instance.Handler._lockdownStates.ToggleLockedUpState(RoleType.Scp079);
         }
 
-        public static void Lockdown049(KeyValuePair<RoleType, int> scp)
+        public void Lockdown049(KeyValuePair<RoleType, int> scp)
         {
-            var door049 = Map.GetDoorByName("049_ARMORY");
-            var heavyDoor049 = Map.Doors.GetClosestDoor(door049);
-            heavyDoor049.Base.ServerChangeLock(DoorLockReason.AdminCommand, true);
-            ScpLockdown.Instance.Handler.runningCoroutines.Add(Timing.RunCoroutine(Unlock049(scp.Value, heavyDoor049)));
+            plugin.EventHandlers.Scp049Door.ChangeLock(DoorLockType.SpecialDoorFeature);
+            plugin.EventHandlers.RunningCoroutines.Add(Timing.RunCoroutine(Unlock049(scp.Value)));
         }
 
-        public static IEnumerator<float> Unlock049(int time, Exiled.API.Features.Door door)
+        public IEnumerator<float> Unlock049(int time)
         {
             yield return Timing.WaitForSeconds(time);
-            door.Base.ServerChangeLock(DoorLockReason.AdminCommand, false);
-            ScpLockdown.Instance.Handler._lockdownStates.ToggleLockedUpState(RoleType.Scp049);
+            plugin.EventHandlers.Scp049Door.Unlock();
+            plugin.EventHandlers.LockdownStates.ToggleLockedUpState(RoleType.Scp049);
             foreach (var player in Player.List.Where(x => x.Role == RoleType.Scp049))
             {
-                player.ShowHint(ScpLockdown.Instance.Config.CBHint, 5);
+                player.SendContainmentBreachText();
             }
         }
 
-        public static void Lockdown096(KeyValuePair<RoleType, int> scp)
+        public void Lockdown096(KeyValuePair<RoleType, int> scp)
         {
-            var door096 = Map.GetDoorByName("096");
-            Exiled.API.Features.Door nearestDoor = Map.Doors.GetClosestDoor(door096);
-            nearestDoor.Base.ServerChangeLock(DoorLockReason.AdminCommand, true);
-            ScpLockdown.Instance.Handler.runningCoroutines.Add(Timing.RunCoroutine(Unlock096(scp.Value, nearestDoor)));
+            plugin.EventHandlers.Scp096Door.ChangeLock(DoorLockType.SpecialDoorFeature);
+            plugin.EventHandlers.RunningCoroutines.Add(Timing.RunCoroutine(Unlock096(scp.Value)));
         }
 
-        public static IEnumerator<float> Unlock096(int time, Exiled.API.Features.Door door)
+        public IEnumerator<float> Unlock096(int time)
         {
             yield return Timing.WaitForSeconds(time);
-            door.Base.ServerChangeLock(DoorLockReason.AdminCommand, false);
-            ScpLockdown.Instance.Handler._lockdownStates.ToggleLockedUpState(RoleType.Scp096);
+            plugin.EventHandlers.Scp096Door.Unlock();
+            plugin.EventHandlers.LockdownStates.ToggleLockedUpState(RoleType.Scp096);
             foreach (var player in Player.List.Where(x => x.Role == RoleType.Scp096))
             {
-                player.ShowHint(ScpLockdown.Instance.Config.CBHint, 5);
+                player.SendContainmentBreachText();
             }
         }
 
-        public static void Lockdown173(KeyValuePair<RoleType, int> scp)
+        public void Lockdown173(KeyValuePair<RoleType, int> scp)
         {
             // Using this door because the gate is opened by the base game
-            Exiled.API.Features.Door door173 = Map.GetDoorByName("173_CONNECTOR");
-            door173.Base.TargetState = false;
-            door173.Base.ServerChangeLock(DoorLockReason.AdminCommand, true);
-            ScpLockdown.Instance.Handler.runningCoroutines.Add(Timing.RunCoroutine(Unlock096(scp.Value, door173)));
+            plugin.EventHandlers.Scp173Door.ChangeLock(DoorLockType.SpecialDoorFeature);
+            plugin.EventHandlers.RunningCoroutines.Add(Timing.RunCoroutine(Unlock096(scp.Value)));
         }
 
-        public static IEnumerator<float> Unlock173(int time, DoorVariant door)
+        public IEnumerator<float> Unlock173(int time, DoorVariant door)
         {
             yield return Timing.WaitForSeconds(time);
-            door.ServerChangeLock(DoorLockReason.AdminCommand, false);
-            ScpLockdown.Instance.Handler._lockdownStates.ToggleLockedUpState(RoleType.Scp173);
+            plugin.EventHandlers.Scp173Door.Unlock();
+            plugin.EventHandlers.LockdownStates.ToggleLockedUpState(RoleType.Scp173);
             foreach (var player in Player.List.Where(x => x.Role == RoleType.Scp173))
             {
-                player.ShowHint(ScpLockdown.Instance.Config.CBHint, 5);
+                player.SendContainmentBreachText();
             }
         }
 
-        public static void Lockdown939(KeyValuePair<RoleType, int> scp)
+        public void Lockdown939(KeyValuePair<RoleType, int> scp)
         {
-            List<Exiled.API.Features.Door> targetDoors = new List<Exiled.API.Features.Door>();
-            Room room939 = Map.Rooms.First(x => x.Type == RoomType.Hcz939);
-            targetDoors.Add(Map.Doors.GetClosestDoor(room939));
-            targetDoors.Add(Map.Doors.GetClosestDoor(room939, false, targetDoors));
-            foreach (var door in targetDoors)
+            foreach (var door in plugin.EventHandlers.Scp939Doors)
             {
-                door.Base.ServerChangeLock(DoorLockReason.AdminCommand, true);
+                door.ChangeLock(DoorLockType.SpecialDoorFeature);
             }
-            ScpLockdown.Instance.Handler.runningCoroutines.Add(Timing.RunCoroutine(Unlock939(scp.Value, targetDoors)));
+
+            plugin.EventHandlers.RunningCoroutines.Add(Timing.RunCoroutine(Unlock939(scp.Value)));
         }
 
-        public static IEnumerator<float> Unlock939(int time, List<Exiled.API.Features.Door> doors)
+        public IEnumerator<float> Unlock939(int time)
         {
             yield return Timing.WaitForSeconds(time);
-
-            foreach (var door in doors)
+            foreach (var door in plugin.EventHandlers.Scp939Doors)
             {
-                door.Base.ServerChangeLock(DoorLockReason.AdminCommand, false);
+                door.Unlock();
             }
 
-            ScpLockdown.Instance.Handler._lockdownStates.ToggleLockedUpState(RoleType.Scp93953);
-
-            foreach (var player in Player.List.Where(x => x.Role == RoleType.Scp93953 || x.Role == RoleType.Scp93989))
+            plugin.EventHandlers.LockdownStates.ToggleLockedUpState(RoleType.Scp93953);
+            foreach (var player in Player.List.Where(x => x.Role.Is939()))
             {
-                player.ShowHint(ScpLockdown.Instance.Config.CBHint, 5);
+                player.SendContainmentBreachText();
             }
         }
 
-        public static IEnumerator<float> OpenDoorsAfterTime()
+        public void SendCassies()
         {
-            yield return Timing.WaitForSeconds(ScpLockdown.Instance.Config.ClassDLock);
-            OpenClassDDoors();
-        }
-
-        public static void OpenClassDDoors()
-        {
-            int count = ScpLockdown.Instance.Handler.Doorsdb.Count;
-            for (int i = 0; i < count; i++)
+            foreach (var cassie in plugin.Config.Cassies)
             {
-                Exiled.API.Features.Door doorVariant = ScpLockdown.Instance.Handler.Doorsdb[i];
-                doorVariant.Base.ServerChangeLock(DoorLockReason.AdminCommand, false);
-                doorVariant.Base.NetworkTargetState = true;
+                plugin.EventHandlers.RunningCoroutines.Add(Timing.CallDelayed(cassie.Value, () =>
+                {
+                    Cassie.Message(cassie.Key, false, false);
+                }));
             }
         }
 
-        public static IEnumerator<float> CassieMsg()
+        public void LockAffectedDoors()
         {
-            yield return Timing.WaitForSeconds(ScpLockdown.Instance.Config.CassieTime);
-            Cassie.Message(ScpLockdown.Instance.Config.CassieMsg);
+            foreach (var door in plugin.EventHandlers.DoorsToLock)
+            {
+                door.Key.ChangeLock(DoorLockType.SpecialDoorFeature);
+            }
+        }
+
+        public void UnLockAffectedDoors()
+        {
+            foreach (var door in plugin.EventHandlers.DoorsToLock)
+            {
+                plugin.EventHandlers.RunningCoroutines.Add(Timing.CallDelayed(door.Value, () =>
+                {
+                    door.Key.Unlock();
+                }));
+            }
         }
     }
 }
