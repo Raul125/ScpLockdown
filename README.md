@@ -3,8 +3,6 @@
 <a href="https://github.com/Raul125/SCPLockdown/releases"><img src="https://img.shields.io/github/v/release/Raul125/SCPLockdown?include_prereleases&label=Release" alt="Releases"></a>
 <a href="https://github.com/Raul125/SCPLockdown/releases"><img src="https://img.shields.io/github/downloads/Raul125/SCPLockdown/total?label=Downloads" alt="Downloads"></a>
 
-Original Dev: https://github.com/AlmightyLks
-
 Exiled Plugin to lockdown SCPs at the beginning of the round for a specified amount of time.<br>
 
 ---
@@ -16,7 +14,7 @@ However, when setting both of the 939 SCPs, the latter one will be the one domin
 Example:  
 
 ```yaml
-ScpLockdown:
+scp_lockdown:
   is_enabled: true
   # The affected SCPs and their duration [seconds] of lockdown.
   affected_scps:
@@ -29,21 +27,27 @@ ScpLockdown:
     Scp93953: 60
   # Can the Scp-079 use/switch cameras while is in lockdown?
   scp079_camera: true
-  # Use this if you want to lock any doors, if you enabled a lockdown of an scp in AffectedScps cfg you don't need to enable their doors lockdown here.
-  locked_doors:
+  # Use this if you want to lock any doors, if you enabled a lockdown of an scp in AffectedScps cfg you don't need to enable their doors lockdown here, Use PrisonDoor to lock class-d cells.
+  affected_doors:
     CheckpointLczA: 60
     CheckpointLczB: 60
-  # Time of Class-D locked in his cells, 0 is disabled
-  class_d_lock: 0
+    PrisonDoor: 60
+  # Use this if you want send cassies with a specified timing.
+  cassies:
+  - containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols:60
+  - containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols:120
   # Displayed to the scps when his lockdown is finished.
-  c_b_hint: Containment Breach!
-  # Custom Cassie for simulating containment breach announce.
-  cassie_msg: containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols
-  # Cassie Time to be played, 0 to disable it
-  cassie_time: 60
+  scps_text:
+    Scp079: Containment Breach!
+    Scp173: Containment Breach!
+    Scp096: Containment Breach!
+    Scp106: Containment Breach!
+    Scp049: Containment Breach!
+    Scp93989: Containment Breach!
+    Scp93953: Containment Breach!
 ```
 
-**DoorTypes for locked_doors:** https://github.com/Exiled-Team/EXILED/blob/fa4bd24d49b7e38ae5fec58f5de3c6b60721194b/Exiled.API/Enums/DoorType.cs#L22
+**DoorTypes for affected_doors:** https://github.com/Exiled-Team/EXILED/blob/64703fcbc95a311a87809bb7613ece36529e4899/Exiled.API/Enums/DoorType.cs#L20
 
 ---
 ### Lockdown
