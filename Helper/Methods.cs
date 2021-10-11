@@ -127,11 +127,11 @@ namespace ScpLockdown.Helper
 
         public void SendCassies()
         {
-            foreach (var cassie in plugin.Config.Cassies)
+            foreach (var cassie in plugin.Config.ParsedCassies)
             {
-                plugin.EventHandlers.RunningCoroutines.Add(Timing.CallDelayed(cassie.Value, () =>
+                plugin.EventHandlers.RunningCoroutines.Add(Timing.CallDelayed(cassie.Item2, () =>
                 {
-                    Cassie.Message(cassie.Key, false, false);
+                    Cassie.Message(cassie.Item1, false, false);
                 }));
             }
         }

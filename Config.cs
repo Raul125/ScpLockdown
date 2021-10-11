@@ -3,6 +3,8 @@ using Exiled.API.Enums;
 using System.Collections.Generic;
 using System.ComponentModel;
 using YamlDotNet.Serialization;
+using Exiled.API.Features;
+using System;
 
 namespace ScpLockdown
 {
@@ -23,7 +25,7 @@ namespace ScpLockdown
         };
 
         [Description("Can the Scp-079 use/switch cameras while is in lockdown?")]
-        public bool Scp079Camera { get; private set; } = true;
+        public bool Scp079Camera { get; set; } = true;
 
         [Description("Use this if you want to lock any doors, if you enabled a lockdown of an scp in AffectedScps cfg you don't need to enable their doors lockdown here, Use PrisonDoor to lock class-d cells.")]
         public Dictionary<DoorType, int> AffectedDoors { get; set; } = new Dictionary<DoorType, int>()
@@ -34,14 +36,14 @@ namespace ScpLockdown
         };
 
         [Description("Use this if you want send cassies with a specified timing.")]
-        public Dictionary<string, int> Cassies { get; set; } = new Dictionary<string, int>()
+        public List<string> Cassies { get; set; } = new List<string>()
         {
-            { "containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols", 60 },
-            { "containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols", 120 }
+            "containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols:60",
+            "containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols:120"
         };
 
         [Description("If enabled, the scps will see a hint, else they will see a broadcast.")]
-        public bool UseHints = true;
+        public bool UseHints { get; set; } = true;
 
         [Description("Displayed to the scps when his lockdown is finished.")]
         public Dictionary<RoleType, string> ScpsText { get; set; } = new Dictionary<RoleType, string>()
@@ -56,10 +58,13 @@ namespace ScpLockdown
         };
 
         [YamlIgnore]
-        public Dictionary<RoleType, int> CheckedAffectedScps { get; set; } = new Dictionary<RoleType, int>();
+        public Dictionary<RoleType, int> CheckedAffectedScps = new Dictionary<RoleType, int>();
 
         [YamlIgnore]
-        public Dictionary<DoorType, int> CheckedAffectedDoors { get; set; } = new Dictionary<DoorType, int>();
+        public Dictionary<DoorType, int> CheckedAffectedDoors = new Dictionary<DoorType, int>();
+
+        [YamlIgnore]
+        public List<Tuple<string, int>> ParsedCassies = new List<Tuple<string, int>>();
 
         public void PreventDuplicatedCfgs()
         {
@@ -77,6 +82,22 @@ namespace ScpLockdown
                 {
                     CheckedAffectedDoors.Add(entry.Key, entry.Value);
                 }
+            }
+        }
+
+        // We're doing this to prevent an exception if a user use the same key in a dictionary
+        public void ParseCassies()
+        {
+            foreach (var cassie in Cassies)
+            {
+                var split = cassie.Split(':');
+                if (!int.TryParse(split[1], out int time))
+                {
+                    Log.Error($"An error has occurred trying to parse {split[1]} to int");
+                    return;
+                }
+
+                ParsedCassies.Add(new Tuple<string, int>(split[0], time));
             }
         }
     }
