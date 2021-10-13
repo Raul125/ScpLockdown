@@ -36,6 +36,8 @@ scp_lockdown:
   cassies:
   - containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols:60
   - containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols:120
+  # If enabled, the scps will see a hint, else they will see a broadcast.
+  use_hints: true
   # Displayed to the scps when his lockdown is finished.
   scps_text:
     Scp079: Containment Breach!
