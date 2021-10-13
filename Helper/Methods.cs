@@ -86,10 +86,10 @@ namespace ScpLockdown.Helper
         {
             // Using this door because the gate is opened by the base game
             plugin.EventHandlers.Scp173Door.ChangeLock(DoorLockType.SpecialDoorFeature);
-            plugin.EventHandlers.RunningCoroutines.Add(Timing.RunCoroutine(Unlock096(scp.Value)));
+            plugin.EventHandlers.RunningCoroutines.Add(Timing.RunCoroutine(Unlock173(scp.Value)));
         }
 
-        public IEnumerator<float> Unlock173(int time, DoorVariant door)
+        public IEnumerator<float> Unlock173(int time)
         {
             yield return Timing.WaitForSeconds(time);
             plugin.EventHandlers.Scp173Door.Unlock();
