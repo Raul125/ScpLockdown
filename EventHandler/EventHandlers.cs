@@ -52,7 +52,7 @@ namespace ScpLockdown
             // Scp173 Door
             Scp173Door = Map.GetDoorByName("173_CONNECTOR");
 
-            foreach (var affectedoor in plugin.Config.CheckedAffectedDoors)
+            foreach (var affectedoor in plugin.Config.AffectedDoors)
             {
                 foreach (var door in Map.Doors.Where(x => x.Type == affectedoor.Key))
                 {
@@ -70,7 +70,7 @@ namespace ScpLockdown
 
             RunningCoroutines.Add(Timing.CallDelayed(1, () =>
             {
-                foreach (var scp in plugin.Config.CheckedAffectedScps)
+                foreach (var scp in plugin.Config.AffectedScps)
                 {
                     LockdownStates.ToggleLockedUpState(scp.Key);
 
