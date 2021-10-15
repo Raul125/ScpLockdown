@@ -73,5 +73,29 @@ namespace ScpLockdown.Helper
 
             return result;
         }
+
+        public static Door GetClosestDoor(this IEnumerable<Door> doors, Room relativeRoom, Door ignoreDoor, bool onlyHeavyDoors = false)
+        {
+            Door result = null;
+            float closestDistanceSqr = Mathf.Infinity;
+            Vector3 currentPosition = relativeRoom.Transform.position;
+            foreach (Door potentialDoor in doors)
+            {
+                if (onlyHeavyDoors)
+                    continue;
+                if (ignoreDoor == potentialDoor)
+                    continue;
+
+                Vector3 directionToTarget = potentialDoor.Base.gameObject.transform.position - currentPosition;
+                float dSqrToTarget = directionToTarget.sqrMagnitude;
+                if (dSqrToTarget < closestDistanceSqr)
+                {
+                    closestDistanceSqr = dSqrToTarget;
+                    result = potentialDoor;
+                }
+            }
+
+            return result;
+        }
     }
 }

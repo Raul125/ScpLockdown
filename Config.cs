@@ -58,30 +58,13 @@ namespace ScpLockdown
         };
 
         [YamlIgnore]
-        public Dictionary<RoleType, int> CheckedAffectedScps = new Dictionary<RoleType, int>();
-
-        [YamlIgnore]
-        public Dictionary<DoorType, int> CheckedAffectedDoors = new Dictionary<DoorType, int>();
-
-        [YamlIgnore]
         public List<Tuple<string, int>> ParsedCassies = new List<Tuple<string, int>>();
 
         public void PreventDuplicatedCfgs()
         {
-            foreach (var entry in AffectedScps)
+            if (AffectedScps.ContainsKey(RoleType.Scp93989) && AffectedScps.ContainsKey(RoleType.Scp93953))
             {
-                if (!CheckedAffectedScps.ContainsKey(entry.Key))
-                {
-                    CheckedAffectedScps.Add(entry.Key, entry.Value);
-                }
-            }
-
-            foreach (var entry in AffectedDoors)
-            {
-                if (!CheckedAffectedDoors.ContainsKey(entry.Key))
-                {
-                    CheckedAffectedDoors.Add(entry.Key, entry.Value);
-                }
+                AffectedScps.Remove(RoleType.Scp93989);
             }
         }
 

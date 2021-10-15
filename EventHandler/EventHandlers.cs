@@ -38,8 +38,9 @@ namespace ScpLockdown
         {
             // Scp939 Doors
             Room room939 = Map.Rooms.First(x => x.Type == RoomType.Hcz939);
-            Scp939Doors.Add(Map.Doors.GetClosestDoor(room939));
-            Scp939Doors.Add(Map.Doors.GetClosestDoor(room939, false, Scp939Doors));
+            var firstscp939door = Map.Doors.GetClosestDoor(room939);
+            Scp939Doors.Add(firstscp939door);
+            Scp939Doors.Add(Map.Doors.GetClosestDoor(room939, firstscp939door, false));
 
             // Scp096 Door
             var door096 = Map.GetDoorByName("096");
@@ -52,7 +53,7 @@ namespace ScpLockdown
             // Scp173 Door
             Scp173Door = Map.GetDoorByName("173_CONNECTOR");
 
-            foreach (var affectedoor in plugin.Config.CheckedAffectedDoors)
+            foreach (var affectedoor in plugin.Config.AffectedDoors)
             {
                 foreach (var door in Map.Doors.Where(x => x.Type == affectedoor.Key))
                 {
@@ -70,7 +71,7 @@ namespace ScpLockdown
 
             RunningCoroutines.Add(Timing.CallDelayed(1, () =>
             {
-                foreach (var scp in plugin.Config.CheckedAffectedScps)
+                foreach (var scp in plugin.Config.AffectedScps)
                 {
                     LockdownStates.ToggleLockedUpState(scp.Key);
 
@@ -91,8 +92,8 @@ namespace ScpLockdown
                         case RoleType.Scp096:
                             Methods.Lockdown096(scp);
                             break;
-                        case RoleType.Scp93953:
                         case RoleType.Scp93989:
+                        case RoleType.Scp93953:
                             Methods.Lockdown939(scp);
                             break;
                     }
