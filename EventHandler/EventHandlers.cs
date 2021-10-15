@@ -38,8 +38,9 @@ namespace ScpLockdown
         {
             // Scp939 Doors
             Room room939 = Map.Rooms.First(x => x.Type == RoomType.Hcz939);
-            Scp939Doors.Add(Map.Doors.GetClosestDoor(room939));
-            Scp939Doors.Add(Map.Doors.GetClosestDoor(room939, false, Scp939Doors));
+            var firstscp939door = Map.Doors.GetClosestDoor(room939);
+            Scp939Doors.Add(firstscp939door);
+            Scp939Doors.Add(Map.Doors.GetClosestDoor(room939, firstscp939door, false));
 
             // Scp096 Door
             var door096 = Map.GetDoorByName("096");
@@ -91,8 +92,8 @@ namespace ScpLockdown
                         case RoleType.Scp096:
                             Methods.Lockdown096(scp);
                             break;
-                        case RoleType.Scp93953:
                         case RoleType.Scp93989:
+                        case RoleType.Scp93953:
                             Methods.Lockdown939(scp);
                             break;
                     }
