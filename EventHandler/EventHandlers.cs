@@ -1,37 +1,32 @@
-﻿using ScpLockdown.Helper;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MEC;
 using Exiled.Events.EventArgs;
-using ScpLockdown.States;
 using Exiled.API.Features;
 using Exiled.API.Enums;
+using SCPLockdown.API.Extensions;
+using SCPLockdown.API.Features;
+using SCPLockdown.API.EventArgs;
 
-namespace ScpLockdown
+namespace SCPLockdown
 {
     public class EventHandlers
     {
-        private ScpLockdown plugin;
-        public Methods Methods;
-        public LockdownStates LockdownStates;
+        private readonly SCPLockdown plugin;
 
-        public List<CoroutineHandle> RunningCoroutines;
-        public Dictionary<Door, int> DoorsToLock;
+        public static List<CoroutineHandle> RunningCoroutines = new List<CoroutineHandle>();
 
         // Scps Doors
-        public List<Door> Scp939Doors;
-        public Door Scp049Door;
-        public Door Scp173Door;
-        public Door Scp096Door;
+        public static List<Door> Scp939Doors = new List<Door>();
+        public static Door Scp049Door;
+        public static Door Scp173Door;
+        public static Door Scp096Door;
 
-        public EventHandlers(ScpLockdown scplockdown)
+        private bool Scps939Locked = false;
+
+        public EventHandlers(SCPLockdown scplockdown)
         {
             plugin = scplockdown;
-            Methods = new Methods(scplockdown);
-            LockdownStates = new LockdownStates();
-            RunningCoroutines = new List<CoroutineHandle>();
-            DoorsToLock = new Dictionary<Door, int>();
-            Scp939Doors = new List<Door>();
         }
 
         public void OnWaitingForPlayers()
@@ -55,9 +50,10 @@ namespace ScpLockdown
 
             foreach (var affectedoor in plugin.Config.AffectedDoors)
             {
-                foreach (var door in Map.Doors.Where(x => x.Type == affectedoor.Key))
+                affectedoor.Doors.Clear();
+                foreach (var door in Map.Doors.Where(x => x.Type == affectedoor.DoorType))
                 {
-                    DoorsToLock.Add(door, affectedoor.Value);
+                    affectedoor.Doors.Add(door);
                 }
             }
 
@@ -66,54 +62,59 @@ namespace ScpLockdown
 
         public void OnRoundStart()
         {
-            Methods.UnLockAffectedDoors();
+            Methods.ProcessDoors();
             Methods.SendCassies();
 
             RunningCoroutines.Add(Timing.CallDelayed(1, () =>
             {
                 foreach (var scp in plugin.Config.AffectedScps)
                 {
-                    LockdownStates.ToggleLockedUpState(scp.Key);
+                    if (Scps939Locked && scp.RoleType.Is939())
+                        continue;
 
-                    switch (scp.Key)
+                    var state = scp.RoleType.LockedUpState();
+                    var ev = new TogglingLockedUpStateEventArgs(scp.RoleType, state, !state);
+                    if (!ev.IsAllowed)
+                        continue;
+
+                    LockdownController.ToggleLockedUpState(scp.RoleType);
+                    switch (scp.RoleType)
                     {
                         case RoleType.Scp079:
-                            RunningCoroutines.Add(Timing.RunCoroutine(Methods.Unlock079(scp.Value)));
-                            break;
+                            {
+                                RunningCoroutines.Add(Timing.RunCoroutine(LockdownController.Unlock079(scp.TimeToUnlock)));
+                                break;
+                            }
                         case RoleType.Scp173:
-                            Methods.Lockdown173(scp);
-                            break;
+                            {
+                                LockdownController.Lockdown173(scp.TimeToUnlock);
+                                break;
+                            }
                         case RoleType.Scp106:
-                            Methods.Lockdown106(scp);
-                            break;
+                            {
+                                LockdownController.Lockdown106(scp.TimeToUnlock);
+                                break;
+                            }
                         case RoleType.Scp049:
-                            Methods.Lockdown049(scp);
-                            break;
+                            {
+                                LockdownController.Lockdown049(scp.TimeToUnlock);
+                                break;
+                            }
                         case RoleType.Scp096:
-                            Methods.Lockdown096(scp);
-                            break;
+                            {
+                                LockdownController.Lockdown096(scp.TimeToUnlock);
+                                break;
+                            }
                         case RoleType.Scp93989:
                         case RoleType.Scp93953:
-                            Methods.Lockdown939(scp);
-                            break;
+                            {
+                                Scps939Locked = true;
+                                LockdownController.Lockdown939(scp.TimeToUnlock);
+                                break;
+                            }
                     }
                 }
             }));
-        }
-
-        public void OnChangingRole(ChangingRoleEventArgs ev)
-        {
-            // This makes Scp106 lockdown compatible with scpswap
-            if (LockdownStates.Scp106LockedUp && ev.NewRole == RoleType.Scp106)
-            {
-                RunningCoroutines.Add(Timing.CallDelayed(1, () =>
-                {
-                    if (ev.Player.Role == RoleType.Scp106)
-                    {
-                        ev.Player.SendToPocketDimension();
-                    }
-                }));
-            }
         }
 
         public void OnRoundEnded(RoundEndedEventArgs ev)
@@ -138,15 +139,30 @@ namespace ScpLockdown
             Scp173Door = null;
             Scp096Door = null;
             Scp939Doors.Clear();
-            DoorsToLock.Clear();
-            LockdownStates.ResetAllStates();
+            LockdownController.ResetAllStates();
             RunningCoroutines.Clear();
+            Scps939Locked = false;
         }
 
         // Scp 106 Part
+        public void OnChangingRole(ChangingRoleEventArgs ev)
+        {
+            // This makes Scp106 lockdown compatible with scpswap
+            if (LockdownController.IsScp106LockedUp && ev.NewRole == RoleType.Scp106)
+            {
+                RunningCoroutines.Add(Timing.CallDelayed(1, () =>
+                {
+                    if (ev.Player.Role == RoleType.Scp106)
+                    {
+                        ev.Player.SendToPocketDimension();
+                    }
+                }));
+            }
+        }
+
         public void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev)
         {
-            if (ev.Player.Role == RoleType.Scp106 && LockdownStates.Scp106LockedUp)
+            if (ev.Player.Role == RoleType.Scp106 && LockdownController.IsScp106LockedUp)
             {
                 ev.Player.SendToPocketDimension();
                 ev.IsAllowed = false;
@@ -155,7 +171,7 @@ namespace ScpLockdown
 
         public void OnEscapingPocketDimension(EscapingPocketDimensionEventArgs ev)
         {
-            if (ev.Player.Role == RoleType.Scp106 && LockdownStates.Scp106LockedUp)
+            if (ev.Player.Role == RoleType.Scp106 && LockdownController.IsScp106LockedUp)
             {
                 ev.Player.SendToPocketDimension();
                 ev.IsAllowed = false;
@@ -164,7 +180,7 @@ namespace ScpLockdown
 
         public void OnCreatingPortal(CreatingPortalEventArgs ev)
         {
-            if (LockdownStates.Scp106LockedUp)
+            if (LockdownController.IsScp106LockedUp)
             {
                 ev.IsAllowed = false;
             }
@@ -172,7 +188,7 @@ namespace ScpLockdown
 
         public void OnTeleporting(TeleportingEventArgs ev)
         {
-            if (LockdownStates.Scp106LockedUp)
+            if (LockdownController.IsScp106LockedUp)
             {
                 ev.IsAllowed = false;
             }
@@ -181,7 +197,7 @@ namespace ScpLockdown
         // Scp 079 Part
         public void OnInteractingTesla(InteractingTeslaEventArgs ev)
         {
-            if (LockdownStates.Scp079LockedUp)
+            if (LockdownController.IsScp079LockedUp)
             {
                 ev.IsAllowed = false;
             }
@@ -189,7 +205,7 @@ namespace ScpLockdown
 
         public void OnInteractingDoor(TriggeringDoorEventArgs ev)
         {
-            if (LockdownStates.Scp079LockedUp && ev.Player.Role == RoleType.Scp079)
+            if (LockdownController.IsScp079LockedUp && ev.Player.Role == RoleType.Scp079)
             {
                 ev.IsAllowed = false;
             }
@@ -197,7 +213,7 @@ namespace ScpLockdown
 
         public void OnChangingCamera(ChangingCameraEventArgs ev)
         {
-            if (LockdownStates.Scp079LockedUp && !plugin.Config.Scp079Camera)
+            if (LockdownController.IsScp079LockedUp && !plugin.Config.Scp079Camera)
             {
                 ev.IsAllowed = false;
             }
@@ -205,7 +221,7 @@ namespace ScpLockdown
 
         public void OnElevatorTeleport(ElevatorTeleportingEventArgs ev)
         {
-            if (LockdownStates.Scp079LockedUp && !plugin.Config.Scp079Camera)
+            if (LockdownController.IsScp079LockedUp && !plugin.Config.Scp079Camera)
             {
                 ev.IsAllowed = false;
             }
@@ -213,7 +229,7 @@ namespace ScpLockdown
 
         public void OnStartingSpeaker(StartingSpeakerEventArgs ev)
         {
-            if (LockdownStates.Scp079LockedUp)
+            if (LockdownController.IsScp079LockedUp)
             {
                 ev.IsAllowed = false;
             }
