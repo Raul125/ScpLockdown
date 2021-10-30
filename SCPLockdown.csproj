@@ -36,11 +36,18 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="API\EventArgs\SendingCassieAnnouncementEventArgs.cs" />
+    <Compile Include="API\EventArgs\ProcessingAffectedDoorEventArgs.cs" />
+    <Compile Include="API\EventArgs\TogglingLockedUpStateEventArgs.cs" />
+    <Compile Include="API\Events\Handlers.cs" />
+    <Compile Include="API\Features\AffectedDoor.cs" />
+    <Compile Include="API\Features\ScpLocker.cs" />
+    <Compile Include="API\Features\CassieAnnouncement.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="States\LockdownStates.cs" />
+    <Compile Include="API\Features\LockdownController.cs" />
     <Compile Include="EventHandler\EventHandlers.cs" />
-    <Compile Include="Helper\Methods.cs" />
-    <Compile Include="Helper\Extensions.cs" />
+    <Compile Include="Methods\Methods.cs" />
+    <Compile Include="API\Extensions.cs" />
     <Compile Include="ScpLockdown.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -59,32 +66,32 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\11.0\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.API, Version=3.0.5.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.3.0.5\lib\net472\Exiled.API.dll</HintPath>
+    <Reference Include="Exiled.API, Version=3.3.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.3.3.1\lib\net472\Exiled.API.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Bootstrap, Version=3.0.5.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.3.0.5\lib\net472\Exiled.Bootstrap.dll</HintPath>
+    <Reference Include="Exiled.Bootstrap, Version=3.3.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.3.3.1\lib\net472\Exiled.Bootstrap.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.CreditTags, Version=3.0.5.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.3.0.5\lib\net472\Exiled.CreditTags.dll</HintPath>
+    <Reference Include="Exiled.CreditTags, Version=3.3.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.3.3.1\lib\net472\Exiled.CreditTags.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.CustomItems, Version=3.0.5.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.3.0.5\lib\net472\Exiled.CustomItems.dll</HintPath>
+    <Reference Include="Exiled.CustomItems, Version=3.3.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.3.3.1\lib\net472\Exiled.CustomItems.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.CustomRoles, Version=3.0.5.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.3.0.5\lib\net472\Exiled.CustomRoles.dll</HintPath>
+    <Reference Include="Exiled.CustomRoles, Version=3.3.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.3.3.1\lib\net472\Exiled.CustomRoles.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Events, Version=3.0.5.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.3.0.5\lib\net472\Exiled.Events.dll</HintPath>
+    <Reference Include="Exiled.Events, Version=3.3.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.3.3.1\lib\net472\Exiled.Events.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Loader, Version=3.0.5.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.3.0.5\lib\net472\Exiled.Loader.dll</HintPath>
+    <Reference Include="Exiled.Loader, Version=3.3.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.3.3.1\lib\net472\Exiled.Loader.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Permissions, Version=3.0.5.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.3.0.5\lib\net472\Exiled.Permissions.dll</HintPath>
+    <Reference Include="Exiled.Permissions, Version=3.3.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\EXILED.3.3.1\lib\net472\Exiled.Permissions.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Updater, Version=3.1.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.3.0.5\lib\net472\Exiled.Updater.dll</HintPath>
+      <HintPath>packages\EXILED.3.3.1\lib\net472\Exiled.Updater.dll</HintPath>
     </Reference>
     <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

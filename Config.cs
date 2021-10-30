@@ -2,86 +2,45 @@
 using Exiled.API.Enums;
 using System.Collections.Generic;
 using System.ComponentModel;
-using YamlDotNet.Serialization;
-using Exiled.API.Features;
-using System;
+using SCPLockdown.API.Features;
 
-namespace ScpLockdown
+namespace SCPLockdown
 {
     public sealed class Config : IConfig
     {
         public bool IsEnabled { get; set; } = true;
 
-        [Description("The affected SCPs and their duration [seconds] of lockdown.")]
-        public Dictionary<RoleType, int> AffectedScps { get; set; } = new Dictionary<RoleType, int>()
+        [Description("The affected SCPs, their shown text when unlocked and the time of their lockdown. (RoleType, string, int => RoleType, text, time in seconds)")]
+        public List<ScpLocker> AffectedScps { get; set; } = new List<ScpLocker>()
         {
-            { RoleType.Scp079, 60 },
-            { RoleType.Scp173, 60 },
-            { RoleType.Scp096, 60 },
-            { RoleType.Scp106, 60 },
-            { RoleType.Scp049, 60 },
-            { RoleType.Scp93989, 60 },
-            { RoleType.Scp93953, 60 }
+            new ScpLocker(RoleType.Scp079, "Containment Breach!", 60),
+            new ScpLocker(RoleType.Scp173, "Containment Breach!", 60),
+            new ScpLocker(RoleType.Scp096, "Containment Breach!", 60),
+            new ScpLocker(RoleType.Scp106, "Containment Breach!", 60),
+            new ScpLocker(RoleType.Scp049, "Containment Breach!", 60),
+            new ScpLocker(RoleType.Scp93989, "Containment Breach!", 60),
+            new ScpLocker(RoleType.Scp93953, "Containment Breach!", 60)
+        };
+
+        [Description("Doors that you want to open/unlock/destroy/unlock after x seconds, this doors are locked at the round start. (DoorType, int, bool, bool, bool => DoorType, delay in seconds, unlock?, open?, destroy?)")]
+        public List<AffectedDoor> AffectedDoors { get; set; } = new List<AffectedDoor>()
+        {
+            new AffectedDoor(DoorType.CheckpointLczA, 60, true, false, false),
+            new AffectedDoor(DoorType.CheckpointLczB, 60, true, false, false),
+            new AffectedDoor(DoorType.PrisonDoor, 60, false, false, false)
+        };
+
+        [Description("Use this if you want send cassies with a specified timing. (string, int => cassie text, delay in seconds)")]
+        public List<CassieAnnouncement> Cassies { get; set; } = new List<CassieAnnouncement>()
+        {
+            new CassieAnnouncement("containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols", 60),
+            new CassieAnnouncement("containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols", 120)
         };
 
         [Description("Can the Scp-079 use/switch cameras while is in lockdown?")]
         public bool Scp079Camera { get; set; } = true;
 
-        [Description("Use this if you want to lock any doors, if you enabled a lockdown of an scp in AffectedScps cfg you don't need to enable their doors lockdown here, Use PrisonDoor to lock class-d cells.")]
-        public Dictionary<DoorType, int> AffectedDoors { get; set; } = new Dictionary<DoorType, int>()
-        {
-            { DoorType.CheckpointLczA, 60 },
-            { DoorType.CheckpointLczB, 60 },
-            { DoorType.PrisonDoor, 60 }
-        };
-
-        [Description("Use this if you want send cassies with a specified timing.")]
-        public List<string> Cassies { get; set; } = new List<string>()
-        {
-            "containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols:60",
-            "containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols:120"
-        };
-
-        [Description("If enabled, the scps will see a hint, else they will see a broadcast.")]
+        [Description("the plugin should use hints or broadcasts?.")]
         public bool UseHints { get; set; } = true;
-
-        [Description("Displayed to the scps when his lockdown is finished.")]
-        public Dictionary<RoleType, string> ScpsText { get; set; } = new Dictionary<RoleType, string>()
-        {
-            { RoleType.Scp079, "Containment Breach!" },
-            { RoleType.Scp173, "Containment Breach!" },
-            { RoleType.Scp096, "Containment Breach!" },
-            { RoleType.Scp106, "Containment Breach!" },
-            { RoleType.Scp049, "Containment Breach!" },
-            { RoleType.Scp93989, "Containment Breach!" },
-            { RoleType.Scp93953, "Containment Breach!" }
-        };
-
-        [YamlIgnore]
-        public List<Tuple<string, int>> ParsedCassies = new List<Tuple<string, int>>();
-
-        public void PreventDuplicatedCfgs()
-        {
-            if (AffectedScps.ContainsKey(RoleType.Scp93989) && AffectedScps.ContainsKey(RoleType.Scp93953))
-            {
-                AffectedScps.Remove(RoleType.Scp93989);
-            }
-        }
-
-        // We're doing this to prevent an exception if a user use the same key in a dictionary
-        public void ParseCassies()
-        {
-            foreach (var cassie in Cassies)
-            {
-                var split = cassie.Split(':');
-                if (!int.TryParse(split[1], out int time))
-                {
-                    Log.Error($"An error has occurred trying to parse {split[1]} to int");
-                    return;
-                }
-
-                ParsedCassies.Add(new Tuple<string, int>(split[0], time));
-            }
-        }
     }
 }

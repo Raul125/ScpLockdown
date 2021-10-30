@@ -6,27 +6,26 @@ using Exiled.API.Enums;
 using Exiled.API.Features;
 using System;
 
-namespace ScpLockdown
+namespace SCPLockdown
 {
-    public class ScpLockdown : Plugin<Config>
+    public class SCPLockdown : Plugin<Config>
     {
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
         public override string Author { get; } = "Raul125";
-        public override string Name { get; } = "ScpLockdown";
+        public override string Name { get; } = "SCPLockdown";
         public override string Prefix { get; } = "scp_lockdown";
-        public override Version Version { get; } = new Version(2, 0, 1);
+        public override Version Version { get; } = new Version(2, 1, 0);
         public override Version RequiredExiledVersion { get; } = new Version(3, 0, 0);
-        public static ScpLockdown Instance { get; private set; }
+        public static SCPLockdown Instance { get; private set; }
         public EventHandlers EventHandlers { get; private set; }
 
         public override void OnEnabled()
         {
             Instance = this;
-            Config.ParseCassies();
-            Config.PreventDuplicatedCfgs();
             RegisterEvents();
             base.OnEnabled();
         }
+
         public override void OnDisabled()
         {
             UnRegisterEvents();
