@@ -54,7 +54,7 @@ namespace SCPLockdown
 
             if (ev.IsAllowed)
             {
-                if (affectedDoor.Destroy)
+                if (ev.Destroy)
                 {
                     foreach (var door in affectedDoor.Doors)
                     {
@@ -64,7 +64,7 @@ namespace SCPLockdown
                     yield break;
                 }
 
-                if (affectedDoor.Unlock)
+                if (ev.Unlock)
                 {
                     foreach (var door in affectedDoor.Doors)
                     {
@@ -72,7 +72,7 @@ namespace SCPLockdown
                     }
                 }
 
-                if (affectedDoor.Open)
+                if (ev.Open)
                 {
                     foreach (var door in affectedDoor.Doors)
                     {
