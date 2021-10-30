@@ -5,6 +5,11 @@
         public string Content { get; set; }
         public int Delay { get; set; }
 
+        public CassieAnnouncement()
+        {
+
+        }
+
         public CassieAnnouncement(string content, int delay)
         {
             Content = content;
