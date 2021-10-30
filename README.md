@@ -3,53 +3,68 @@
 <a href="https://github.com/Raul125/SCPLockdown/releases"><img src="https://img.shields.io/github/v/release/Raul125/SCPLockdown?include_prereleases&label=Release" alt="Releases"></a>
 <a href="https://github.com/Raul125/SCPLockdown/releases"><img src="https://img.shields.io/github/downloads/Raul125/SCPLockdown/total?label=Downloads" alt="Downloads"></a>
 
-Exiled Plugin to lockdown SCPs at the beginning of the round for a specified amount of time.<br>
+Exiled Plugin to lockdown SCPs at the beginning of the round for a specified amount of time and more features, check the config below.<br>
 
 ---
 ### Configs
 
-The plugin takes max. 6 different configurable SCPs and their desired duration in seconds.  
-However, when setting both of the 939 SCPs, the latter one will be the one dominating.  
-
-Example:  
-
+Default:  
 ```yaml
 scp_lockdown:
   is_enabled: true
-  # The affected SCPs and their duration [seconds] of lockdown.
+  # The affected SCPs, their shown text when unlocked and the time of their lockdown. (RoleType, string, int => RoleType, text, time in seconds)
   affected_scps:
-    Scp079: 60
-    Scp173: 60
-    Scp096: 60
-    Scp106: 60
-    Scp049: 60
-    Scp93989: 60
-    Scp93953: 60
+  - role_type: Scp079
+    text: Containment Breach!
+    time_to_unlock: 60
+  - role_type: Scp173
+    text: Containment Breach!
+    time_to_unlock: 60
+  - role_type: Scp096
+    text: Containment Breach!
+    time_to_unlock: 60
+  - role_type: Scp106
+    text: Containment Breach!
+    time_to_unlock: 60
+  - role_type: Scp049
+    text: Containment Breach!
+    time_to_unlock: 60
+  - role_type: Scp93989
+    text: Containment Breach!
+    time_to_unlock: 60
+  - role_type: Scp93953
+    text: Containment Breach!
+    time_to_unlock: 60
+  # Doors that you want to open/unlock/destroy/unlock after x seconds, this doors are locked at the round start. (DoorType, int, bool, bool, bool => DoorType, delay in seconds, unlock?, open?, destroy?)
+  affected_doors:
+  - door_type: CheckpointLczA
+    delay: 60
+    unlock: true
+    destroy: false
+    open: false
+  - door_type: CheckpointLczB
+    delay: 60
+    unlock: true
+    destroy: false
+    open: false
+  - door_type: PrisonDoor
+    delay: 60
+    unlock: false
+    destroy: false
+    open: false
+  # Use this if you want send cassies with a specified timing. (string, int => cassie text, delay in seconds)
+  cassies:
+  - content: containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols
+    delay: 60
+  - content: containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols
+    delay: 120
   # Can the Scp-079 use/switch cameras while is in lockdown?
   scp079_camera: true
-  # Use this if you want to lock any doors, if you enabled a lockdown of an scp in AffectedScps cfg you don't need to enable their doors lockdown here, Use PrisonDoor to lock class-d cells.
-  affected_doors:
-    CheckpointLczA: 60
-    CheckpointLczB: 60
-    PrisonDoor: 60
-  # Use this if you want send cassies with a specified timing.
-  cassies:
-  - containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols:60
-  - containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols:120
-  # If enabled, the scps will see a hint, else they will see a broadcast.
+  # the plugin should use hints or broadcasts?.
   use_hints: true
-  # Displayed to the scps when his lockdown is finished.
-  scps_text:
-    Scp079: Containment Breach!
-    Scp173: Containment Breach!
-    Scp096: Containment Breach!
-    Scp106: Containment Breach!
-    Scp049: Containment Breach!
-    Scp93989: Containment Breach!
-    Scp93953: Containment Breach!
 ```
 
-**DoorTypes for affected_doors:** https://github.com/Exiled-Team/EXILED/blob/64703fcbc95a311a87809bb7613ece36529e4899/Exiled.API/Enums/DoorType.cs#L20
+**DoorTypes for affected_doors:** https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Enums/DoorType.cs
 
 ---
 ### Lockdown
