@@ -27,7 +27,7 @@ namespace SCPLockdown
         {
             new AffectedDoor(DoorType.CheckpointLczA, 60, true, false, false),
             new AffectedDoor(DoorType.CheckpointLczB, 60, true, false, false),
-            new AffectedDoor(DoorType.PrisonDoor, 60, false, false, false)
+            new AffectedDoor(DoorType.PrisonDoor, 60, false, true, false)
         };
 
         [Description("Use this if you want send cassies with a specified timing. (string, int => cassie text, delay in seconds)")]
