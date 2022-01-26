@@ -17,7 +17,7 @@ namespace SCPLockdown
             }
         }
 
-        public static IEnumerator<float> SendCassie(CassieAnnouncement cassie)
+        private static IEnumerator<float> SendCassie(CassieAnnouncement cassie)
         {
             yield return Timing.WaitForSeconds(cassie.Delay);
             var ev = new SendingCassieAnnouncementEventArgs(cassie.Content, cassie.Delay);
