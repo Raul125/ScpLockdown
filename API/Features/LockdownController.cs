@@ -189,7 +189,7 @@ namespace SCPLockdown.API.Features
             }
 
             ToggleLockedUpState(RoleType.Scp93953);
-            foreach (var player in Player.List.Where(x => x.Role.Is939()))
+            foreach (var player in Player.List.Where(x => x.Role.Type.Is939()))
             {
                 player.SendContainmentBreachText();
             }
