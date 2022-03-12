@@ -31,36 +31,36 @@ namespace SCPLockdown
 
         public void OnWaitingForPlayers()
         {
-            // Scp939 Doors && Fix for Exiled 5.0.0-beta.3
+            // Fix for Exiled 5.0.0-beta.3
             Timing.CallDelayed(0.6f, () =>
             {
                 Room room939 = Room.Get(RoomType.Hcz939);
                 var firstscp939door = Door.List.GetClosestDoor(room939);
                 Scp939Doors.Add(firstscp939door);
                 Scp939Doors.Add(Door.List.GetClosestDoor(room939, firstscp939door, false));
-            });
-            
-            // Scp096 Door
-            var door096 = Door.Get("096");
-            Scp096Door = Door.List.GetClosestDoor(door096);
 
-            // Scp049 Door
-            var door049 = Door.Get("049_ARMORY");
-            Scp049Door = Door.List.GetClosestDoor(door049);
+                // Scp096 Door
+                var door096 = Door.Get("096");
+                Scp096Door = Door.List.GetClosestDoor(door096);
 
-            // Scp173 Door
-            Scp173Door = Door.Get("173_CONNECTOR");
+                // Scp049 Door
+                var door049 = Door.Get("049_ARMORY");
+                Scp049Door = Door.List.GetClosestDoor(door049);
 
-            foreach (var affectedoor in plugin.Config.AffectedDoors)
-            {
-                affectedoor.Doors.Clear();
-                foreach (var door in Door.Get(x => x.Type == affectedoor.DoorType))
+                // Scp173 Door
+                Scp173Door = Door.Get("173_CONNECTOR");
+
+                foreach (var affectedoor in plugin.Config.AffectedDoors)
                 {
-                    affectedoor.Doors.Add(door);
+                    affectedoor.Doors.Clear();
+                    foreach (var door in Door.Get(x => x.Type == affectedoor.DoorType))
+                    {
+                        affectedoor.Doors.Add(door);
+                    }
                 }
-            }
 
-            Methods.LockAffectedDoors();
+                Methods.LockAffectedDoors();
+            });
         }
 
         public void OnRoundStart()
