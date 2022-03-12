@@ -14,7 +14,7 @@ namespace SCPLockdown
         public override string Author { get; } = "Raul125";
         public override string Name { get; } = "SCPLockdown";
         public override string Prefix { get; } = "scp_lockdown";
-        public override Version Version { get; } = new Version(2, 2, 1);
+        public override Version Version { get; } = new Version(2, 2, 2);
         public override Version RequiredExiledVersion { get; } = new Version(5, 0, 0);
         public static SCPLockdown Instance { get; private set; }
         public EventHandlers EventHandlers { get; private set; }
