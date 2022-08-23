@@ -1,8 +1,8 @@
-﻿using Exiled.Events.Extensions;
-using SCPLockdown.API.EventArgs;
-
-namespace SCPLockdown.API.Events
+﻿namespace SCPLockdown.API.Events
 {
+    using Exiled.Events.Extensions;
+    using EventArgs;
+
     public static class Handlers
     {
         public static event Exiled.Events.Events.CustomEventHandler<ProcessingAffectedDoorEventArgs> ProcessingAffectedDoor;

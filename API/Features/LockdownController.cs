@@ -1,14 +1,14 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Extensions;
-using Exiled.API.Features;
-using MEC;
-using SCPLockdown.API.EventArgs;
-using SCPLockdown.API.Extensions;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace SCPLockdown.API.Features
+﻿namespace SCPLockdown.API.Features
 {
+    using Exiled.API.Enums;
+    using Exiled.API.Extensions;
+    using Exiled.API.Features;
+    using MEC;
+    using EventArgs;
+    using Extensions;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public static class LockdownController
     {
         public static bool IsScp079LockedUp { get; private set; } = false;
@@ -57,9 +57,10 @@ namespace SCPLockdown.API.Features
         // Lock
         public static void Lockdown106(int time)
         {
-            foreach (var player in Player.List.Where(x => x.Role == RoleType.Scp106))
+            foreach (var player in Player.List)
             {
-                player.SendToPocketDimension();
+                if (player.Role.Type is RoleType.Scp106)
+                    player.SendToPocketDimension();
             }
 
             EventHandlers.RunningCoroutines.Add(Timing.RunCoroutine(Unlock106s(time)));
@@ -87,9 +88,7 @@ namespace SCPLockdown.API.Features
         public static void Lockdown939(int time)
         {
             foreach (var door in EventHandlers.Scp939Doors)
-            {
                 door.ChangeLock(DoorLockType.SpecialDoorFeature);
-            }
 
             EventHandlers.RunningCoroutines.Add(Timing.RunCoroutine(Unlock939s(time)));
         }
@@ -105,10 +104,13 @@ namespace SCPLockdown.API.Features
 
             var pos = RoleType.Scp106.GetRandomSpawnProperties().Item1;
             ToggleLockedUpState(RoleType.Scp106);
-            foreach (var player in Player.List.Where(x => x.Role == RoleType.Scp106))
+            foreach (var player in Player.List)
             {
-                player.Position = pos;
-                player.SendContainmentBreachText();
+                if (player.Role.Type is RoleType.Scp106)
+                {
+                    player.Position = pos;
+                    player.SendContainmentBreachText();
+                }
             }
         }
 
@@ -121,9 +123,10 @@ namespace SCPLockdown.API.Features
                 yield break;
 
             ToggleLockedUpState(RoleType.Scp079);
-            foreach (var player in Player.List.Where(x => x.Role == RoleType.Scp079))
+            foreach (var player in Player.List)
             {
-                player.SendContainmentBreachText();
+                if (player.Role.Type is RoleType.Scp079)
+                    player.SendContainmentBreachText();
             }
         }
 
@@ -137,9 +140,10 @@ namespace SCPLockdown.API.Features
 
             EventHandlers.Scp049Door.Unlock();
             ToggleLockedUpState(RoleType.Scp049);
-            foreach (var player in Player.List.Where(x => x.Role == RoleType.Scp049))
+            foreach (var player in Player.List)
             {
-                player.SendContainmentBreachText();
+                if (player.Role.Type == RoleType.Scp049)
+                    player.SendContainmentBreachText();
             }
         }
 
@@ -153,9 +157,10 @@ namespace SCPLockdown.API.Features
 
             EventHandlers.Scp096Door.Unlock();
             ToggleLockedUpState(RoleType.Scp096);
-            foreach (var player in Player.List.Where(x => x.Role == RoleType.Scp096))
+            foreach (var player in Player.List)
             {
-                player.SendContainmentBreachText();
+                if (player.Role.Type is RoleType.Scp096)
+                    player.SendContainmentBreachText();
             }
         }
 
@@ -169,9 +174,10 @@ namespace SCPLockdown.API.Features
 
             EventHandlers.Scp173Door.Unlock();
             ToggleLockedUpState(RoleType.Scp173);
-            foreach (var player in Player.List.Where(x => x.Role == RoleType.Scp173))
+            foreach (var player in Player.List)
             {
-                player.SendContainmentBreachText();
+                if (player.Role.Type is RoleType.Scp173)
+                    player.SendContainmentBreachText();
             }
         }
 
@@ -184,14 +190,13 @@ namespace SCPLockdown.API.Features
                 yield break;
 
             foreach (var door in EventHandlers.Scp939Doors)
-            {
                 door.Unlock();
-            }
 
             ToggleLockedUpState(RoleType.Scp93953);
-            foreach (var player in Player.List.Where(x => x.Role.Type.Is939()))
+            foreach (var player in Player.List)
             {
-                player.SendContainmentBreachText();
+                if (player.Role.Type.Is939())
+                    player.SendContainmentBreachText();
             }
         }
     }

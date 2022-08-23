@@ -1,20 +1,18 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
-using MEC;
-using System.Collections.Generic;
-using SCPLockdown.API.Features;
-using SCPLockdown.API.EventArgs;
-
-namespace SCPLockdown
+﻿namespace SCPLockdown
 {
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
+    using MEC;
+    using System.Collections.Generic;
+    using API.Features;
+    using API.EventArgs;
+
     public static class Methods
     {
         public static void SendCassies()
         {
             foreach (var cassie in SCPLockdown.Instance.Config.Cassies)
-            {
                 EventHandlers.RunningCoroutines.Add(Timing.RunCoroutine(SendCassie(cassie)));
-            }
         }
 
         private static IEnumerator<float> SendCassie(CassieAnnouncement cassie)
@@ -23,9 +21,7 @@ namespace SCPLockdown
             var ev = new SendingCassieAnnouncementEventArgs(cassie.Content, cassie.Delay);
 
             if (ev.IsAllowed)
-            {
                 Cassie.Message(cassie.Content, false, false);
-            }
         }
 
         public static void LockAffectedDoors()
@@ -33,18 +29,14 @@ namespace SCPLockdown
             foreach (var affectedDoors in SCPLockdown.Instance.Config.AffectedDoors)
             {
                 foreach (var door in affectedDoors.Doors)
-                {
                     door.ChangeLock(DoorLockType.SpecialDoorFeature);
-                }
             }
         }
 
         public static void ProcessDoors()
         {
             foreach (var door in SCPLockdown.Instance.Config.AffectedDoors)
-            {
                 EventHandlers.RunningCoroutines.Add(Timing.RunCoroutine(ProcessDoor(door)));
-            }
         }
 
         private static IEnumerator<float> ProcessDoor(AffectedDoor affectedDoor)
@@ -52,33 +44,27 @@ namespace SCPLockdown
             yield return Timing.WaitForSeconds(affectedDoor.Delay);
             var ev = new ProcessingAffectedDoorEventArgs(affectedDoor.Doors, affectedDoor.Delay, affectedDoor.Unlock, affectedDoor.Open, affectedDoor.Destroy);
 
-            if (ev.IsAllowed)
+            if (!ev.IsAllowed)
+                yield break;
+
+            if (ev.Destroy)
             {
-                if (ev.Destroy)
-                {
-                    foreach (var door in affectedDoor.Doors)
-                    {
-                        door.BreakDoor();
-                    }
+                foreach (var door in affectedDoor.Doors)
+                    door.BreakDoor(Interactables.Interobjects.DoorUtils.DoorDamageType.ServerCommand);
 
-                    yield break;
-                }
+                yield break;
+            }
 
-                if (ev.Unlock)
-                {
-                    foreach (var door in affectedDoor.Doors)
-                    {
-                        door.Unlock();
-                    }
-                }
+            if (ev.Unlock)
+            {
+                foreach (var door in affectedDoor.Doors)
+                    door.Unlock();
+            }
 
-                if (ev.Open)
-                {
-                    foreach (var door in affectedDoor.Doors)
-                    {
-                        door.IsOpen = true;
-                    }
-                }
+            if (ev.Open)
+            {
+                foreach (var door in affectedDoor.Doors)
+                    door.IsOpen = true;
             }
         }
     }
