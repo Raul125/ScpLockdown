@@ -1,11 +1,11 @@
-﻿using Exiled.API.Interfaces;
-using Exiled.API.Enums;
-using System.Collections.Generic;
-using System.ComponentModel;
-using SCPLockdown.API.Features;
-
-namespace SCPLockdown
+﻿namespace SCPLockdown
 {
+    using Exiled.API.Interfaces;
+    using Exiled.API.Enums;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+
+    using API.Features;
     public sealed class Config : IConfig
     {
         public bool IsEnabled { get; set; } = true;

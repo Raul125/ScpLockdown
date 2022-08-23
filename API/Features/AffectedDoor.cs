@@ -1,10 +1,10 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
-using System.Collections.Generic;
-using YamlDotNet.Serialization;
-
-namespace SCPLockdown.API.Features
+﻿namespace SCPLockdown.API.Features
 {
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
+    using System.Collections.Generic;
+    using YamlDotNet.Serialization;
+
     public class AffectedDoor
     {
         public DoorType DoorType { get; set; }

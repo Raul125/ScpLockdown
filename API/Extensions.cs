@@ -1,15 +1,15 @@
-﻿using Exiled.API.Features;
-using SCPLockdown.API.Features;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-
-namespace SCPLockdown.API.Extensions
+﻿namespace SCPLockdown.API.Extensions
 {
+    using Exiled.API.Features;
+    using Features;
+    using System.Collections.Generic;
+    using System.Linq;
+    using UnityEngine;
+
     public static class Extensions
     {
-        private static readonly Vector3 PocketDimensionPosition = new Vector3(0, -1998.67f, 2);
-        public static void SendToPocketDimension(this Player player) => player.Position = PocketDimensionPosition;
+        private static readonly Vector3 pocketDimensionPosition = new Vector3(0, -1998.67f, 2);
+        public static void SendToPocketDimension(this Player player) => player.Position = pocketDimensionPosition;
 
         public static bool LockedUpState(this RoleType role)
         {
@@ -40,13 +40,9 @@ namespace SCPLockdown.API.Extensions
 
             string text = SCPLockdown.Instance.Config.AffectedScps.Find(x => x.RoleType == player.Role).Text;
             if (SCPLockdown.Instance.Config.UseHints)
-            {
                 player.ShowHint(text, 10);
-            }
             else
-            {
                 player.Broadcast(10, text);
-            }
         }
 
         public static Door GetClosestDoor(this IEnumerable<Door> doors, Door relativeDoor, bool onlyHeavyDoors = false, IEnumerable<Door> ignoreDoors = null)
@@ -55,12 +51,15 @@ namespace SCPLockdown.API.Extensions
             Door result = null;
             float closestDistanceSqr = Mathf.Infinity;
             Vector3 currentPosition = relativeDoor.Base.gameObject.transform.position;
+
             foreach (Door potentialDoor in doors)
             {
                 if (onlyHeavyDoors)
                     continue;
+
                 if (ignoreDoors.Contains(potentialDoor))
                     continue;
+
                 if (potentialDoor == relativeDoor)
                     continue;
 
@@ -82,10 +81,12 @@ namespace SCPLockdown.API.Extensions
             Door result = null;
             float closestDistanceSqr = Mathf.Infinity;
             Vector3 currentPosition = relativeRoom.Transform.position;
+
             foreach (Door potentialDoor in doors)
             {
                 if (onlyHeavyDoors)
                     continue;
+
                 if (ignoreDoors.Contains(potentialDoor))
                     continue;
 
@@ -106,10 +107,12 @@ namespace SCPLockdown.API.Extensions
             Door result = null;
             float closestDistanceSqr = Mathf.Infinity;
             Vector3 currentPosition = relativeRoom.Transform.position;
+
             foreach (Door potentialDoor in doors)
             {
                 if (onlyHeavyDoors)
                     continue;
+
                 if (ignoreDoor == potentialDoor)
                     continue;
 
