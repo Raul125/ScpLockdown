@@ -8,6 +8,7 @@
     using Extensions;
     using System.Collections.Generic;
     using System.Linq;
+    using PlayerRoles;
 
     public static class LockdownController
     {
@@ -18,27 +19,26 @@
         public static bool IsScp939LockedUp { get; private set; } = false;
         public static bool IsScp173LockedUp { get; private set; } = false;
 
-        public static void ToggleLockedUpState(RoleType role)
+        public static void ToggleLockedUpState(RoleTypeId role)
         {
             switch (role)
             {
-                case RoleType.Scp079:
+                case RoleTypeId.Scp079:
                     IsScp079LockedUp = !IsScp079LockedUp;
                     break;
-                case RoleType.Scp096:
+                case RoleTypeId.Scp096:
                     IsScp096LockedUp = !IsScp096LockedUp;
                     break;
-                case RoleType.Scp106:
+                case RoleTypeId.Scp106:
                     IsScp106LockedUp = !IsScp106LockedUp;
                     break;
-                case RoleType.Scp049:
+                case RoleTypeId.Scp049:
                     IsScp049LockedUp = !IsScp049LockedUp;
                     break;
-                case RoleType.Scp173:
+                case RoleTypeId.Scp173:
                     IsScp173LockedUp = !IsScp173LockedUp;
                     break;
-                case RoleType.Scp93953:
-                case RoleType.Scp93989:
+                case RoleTypeId.Scp939:
                     IsScp939LockedUp = !IsScp939LockedUp;
                     break;
             }
@@ -59,7 +59,7 @@
         {
             foreach (var player in Player.List)
             {
-                if (player.Role.Type is RoleType.Scp106)
+                if (player.Role.Type is RoleTypeId.Scp106)
                     player.SendToPocketDimension();
             }
 
@@ -97,16 +97,16 @@
         public static IEnumerator<float> Unlock106s(int time)
         {
             yield return Timing.WaitForSeconds(time);
-            var state = RoleType.Scp106.LockedUpState();
-            var ev = new TogglingLockedUpStateEventArgs(RoleType.Scp106, state, !state);
+            var state = RoleTypeId.Scp106.LockedUpState();
+            var ev = new TogglingLockedUpStateEventArgs(RoleTypeId.Scp106, state, !state);
             if (!ev.IsAllowed)
                 yield break;
 
-            var pos = RoleType.Scp106.GetRandomSpawnProperties().Item1;
-            ToggleLockedUpState(RoleType.Scp106);
+            var pos = RoleTypeId.Scp106.GetRandomSpawnLocation().Position;
+            ToggleLockedUpState(RoleTypeId.Scp106);
             foreach (var player in Player.List)
             {
-                if (player.Role.Type is RoleType.Scp106)
+                if (player.Role.Type is RoleTypeId.Scp106)
                 {
                     player.Position = pos;
                     player.SendContainmentBreachText();
@@ -117,15 +117,15 @@
         public static IEnumerator<float> Unlock079(int time)
         {
             yield return Timing.WaitForSeconds(time);
-            var state = RoleType.Scp079.LockedUpState();
-            var ev = new TogglingLockedUpStateEventArgs(RoleType.Scp079, state, !state);
+            var state = RoleTypeId.Scp079.LockedUpState();
+            var ev = new TogglingLockedUpStateEventArgs(RoleTypeId.Scp079, state, !state);
             if (!ev.IsAllowed)
                 yield break;
 
-            ToggleLockedUpState(RoleType.Scp079);
+            ToggleLockedUpState(RoleTypeId.Scp079);
             foreach (var player in Player.List)
             {
-                if (player.Role.Type is RoleType.Scp079)
+                if (player.Role.Type is RoleTypeId.Scp079)
                     player.SendContainmentBreachText();
             }
         }
@@ -133,16 +133,16 @@
         public static IEnumerator<float> Unlock049(int time)
         {
             yield return Timing.WaitForSeconds(time);
-            var state = RoleType.Scp049.LockedUpState();
-            var ev = new TogglingLockedUpStateEventArgs(RoleType.Scp049, state, !state);
+            var state = RoleTypeId.Scp049.LockedUpState();
+            var ev = new TogglingLockedUpStateEventArgs(RoleTypeId.Scp049, state, !state);
             if (!ev.IsAllowed)
                 yield break;
 
             EventHandlers.Scp049Door.Unlock();
-            ToggleLockedUpState(RoleType.Scp049);
+            ToggleLockedUpState(RoleTypeId.Scp049);
             foreach (var player in Player.List)
             {
-                if (player.Role.Type == RoleType.Scp049)
+                if (player.Role.Type == RoleTypeId.Scp049)
                     player.SendContainmentBreachText();
             }
         }
@@ -150,16 +150,16 @@
         public static IEnumerator<float> Unlock096(int time)
         {
             yield return Timing.WaitForSeconds(time);
-            var state = RoleType.Scp096.LockedUpState();
-            var ev = new TogglingLockedUpStateEventArgs(RoleType.Scp096, state, !state);
+            var state = RoleTypeId.Scp096.LockedUpState();
+            var ev = new TogglingLockedUpStateEventArgs(RoleTypeId.Scp096, state, !state);
             if (!ev.IsAllowed)
                 yield break;
 
             EventHandlers.Scp096Door.Unlock();
-            ToggleLockedUpState(RoleType.Scp096);
+            ToggleLockedUpState(RoleTypeId.Scp096);
             foreach (var player in Player.List)
             {
-                if (player.Role.Type is RoleType.Scp096)
+                if (player.Role.Type is RoleTypeId.Scp096)
                     player.SendContainmentBreachText();
             }
         }
@@ -167,16 +167,16 @@
         public static IEnumerator<float> Unlock173(int time)
         {
             yield return Timing.WaitForSeconds(time);
-            var state = RoleType.Scp173.LockedUpState();
-            var ev = new TogglingLockedUpStateEventArgs(RoleType.Scp173, state, !state);
+            var state = RoleTypeId.Scp173.LockedUpState();
+            var ev = new TogglingLockedUpStateEventArgs(RoleTypeId.Scp173, state, !state);
             if (!ev.IsAllowed)
                 yield break;
 
             EventHandlers.Scp173Door.Unlock();
-            ToggleLockedUpState(RoleType.Scp173);
+            ToggleLockedUpState(RoleTypeId.Scp173);
             foreach (var player in Player.List)
             {
-                if (player.Role.Type is RoleType.Scp173)
+                if (player.Role.Type is RoleTypeId.Scp173)
                     player.SendContainmentBreachText();
             }
         }
@@ -184,18 +184,18 @@
         public static IEnumerator<float> Unlock939s(int time)
         {
             yield return Timing.WaitForSeconds(time);
-            var state = RoleType.Scp93953.LockedUpState();
-            var ev = new TogglingLockedUpStateEventArgs(RoleType.Scp93953, state, !state);
+            var state = RoleTypeId.Scp939.LockedUpState();
+            var ev = new TogglingLockedUpStateEventArgs(RoleTypeId.Scp939, state, !state);
             if (!ev.IsAllowed)
                 yield break;
 
             foreach (var door in EventHandlers.Scp939Doors)
                 door.Unlock();
 
-            ToggleLockedUpState(RoleType.Scp93953);
+            ToggleLockedUpState(RoleTypeId.Scp939);
             foreach (var player in Player.List)
             {
-                if (player.Role.Type.Is939())
+                if (player.Role.Type is RoleTypeId.Scp939)
                     player.SendContainmentBreachText();
             }
         }

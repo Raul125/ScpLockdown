@@ -1,10 +1,11 @@
 ﻿namespace SCPLockdown.API.EventArgs
 {
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
     using System;
     using System.Collections.Generic;
 
-    public class ProcessingAffectedDoorEventArgs : EventArgs
+    public class ProcessingAffectedDoorEventArgs : EventArgs, IExiledEvent
     {
         public bool IsAllowed { get; set; } = true;
         public List<Door> Doors { get; }

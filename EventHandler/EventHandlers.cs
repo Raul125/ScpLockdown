@@ -8,6 +8,13 @@
     using API.Extensions;
     using API.Features;
     using API.EventArgs;
+    using PlayerRoles;
+    using Exiled.Events.EventArgs.Server;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Scp106;
+    using Exiled.Events.EventArgs.Scp079;
+    using Exiled.API.Extensions;
+    using System.Linq;
 
     public class EventHandlers
     {
@@ -21,8 +28,6 @@
         public static Door Scp173Door;
         public static Door Scp096Door;
 
-        private bool Scps939Locked = false;
-
         public EventHandlers(SCPLockdown scplockdown)
         {
             plugin = scplockdown;
@@ -30,26 +35,17 @@
 
         public void OnWaitingForPlayers()
         {
-            Room room939 = Room.Get(RoomType.Hcz939);
-            var firstscp939door = Door.List.GetClosestDoor(room939);
-            Scp939Doors.Add(firstscp939door);
-            Scp939Doors.Add(Door.List.GetClosestDoor(room939, firstscp939door, false));
+            foreach (Door door in Room.Get(RoomType.Hcz939).Doors)
+                Scp939Doors.Add(door);
 
-            // Scp096 Door
-            var door096 = Door.Get("096");
-            Scp096Door = Door.List.GetClosestDoor(door096);
+            Scp096Door = Room.Get(RoomType.Hcz096).Doors.First(x => x.Type != DoorType.Scp096);
+            Scp049Door = Door.Get(DoorType.Scp049Gate);
+            Scp173Door = Door.Get(DoorType.Scp173Connector);
 
-            // Scp049 Door
-            var door049 = Door.Get("049_ARMORY");
-            Scp049Door = Door.List.GetClosestDoor(door049);
-
-            // Scp173 Door
-            Scp173Door = Door.Get("173_CONNECTOR");
-
-            foreach (var affectedoor in plugin.Config.AffectedDoors)
+            foreach (AffectedDoor affectedoor in plugin.Config.AffectedDoors)
             {
                 affectedoor.Doors.Clear();
-                foreach (var door in Door.List)
+                foreach (Door door in Door.List)
                 {
                     if (door.Type == affectedoor.DoorType)
                         affectedoor.Doors.Add(door);
@@ -68,9 +64,6 @@
             {
                 foreach (var scp in plugin.Config.AffectedScps)
                 {
-                    if (Scps939Locked && scp.RoleType.Is939())
-                        continue;
-
                     var state = scp.RoleType.LockedUpState();
                     var ev = new TogglingLockedUpStateEventArgs(scp.RoleType, state, !state);
                     if (!ev.IsAllowed)
@@ -79,35 +72,34 @@
                     LockdownController.ToggleLockedUpState(scp.RoleType);
                     switch (scp.RoleType)
                     {
-                        case RoleType.Scp079:
+                        case RoleTypeId.Scp079:
                             {
                                 RunningCoroutines.Add(Timing.RunCoroutine(LockdownController.Unlock079(scp.TimeToUnlock)));
                                 break;
                             }
-                        case RoleType.Scp173:
+                        case RoleTypeId.Scp173:
                             {
                                 LockdownController.Lockdown173(scp.TimeToUnlock);
                                 break;
                             }
-                        case RoleType.Scp106:
+                        case RoleTypeId.Scp106:
                             {
                                 LockdownController.Lockdown106(scp.TimeToUnlock);
                                 break;
                             }
-                        case RoleType.Scp049:
+                        case RoleTypeId.Scp049:
                             {
                                 LockdownController.Lockdown049(scp.TimeToUnlock);
                                 break;
                             }
-                        case RoleType.Scp096:
+                        case RoleTypeId.Scp096:
                             {
                                 LockdownController.Lockdown096(scp.TimeToUnlock);
                                 break;
                             }
-                        case RoleType.Scp93989:
-                        case RoleType.Scp93953:
+                        case RoleTypeId.Scp939:
                             {
-                                Scps939Locked = true;
+ 
                                 LockdownController.Lockdown939(scp.TimeToUnlock);
                                 break;
                             }
@@ -138,19 +130,17 @@
             RunningCoroutines.Clear();
 
             LockdownController.ResetAllStates();
-            
-            Scps939Locked = false;
         }
 
         // Scp 106 Part
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
             // This makes Scp106 lockdown compatible with scpswap
-            if (LockdownController.IsScp106LockedUp && ev.NewRole == RoleType.Scp106)
+            if (LockdownController.IsScp106LockedUp && ev.NewRole == RoleTypeId.Scp106)
             {
                 RunningCoroutines.Add(Timing.CallDelayed(1, () =>
                 {
-                    if (ev.Player.Role.Type is RoleType.Scp106)
+                    if (ev.Player.Role.Type is RoleTypeId.Scp106)
                         ev.Player.SendToPocketDimension();
                 }));
             }
@@ -158,7 +148,7 @@
 
         public void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev)
         {
-            if (ev.Player.Role.Type is RoleType.Scp106 && LockdownController.IsScp106LockedUp)
+            if (ev.Player.Role.Type is RoleTypeId.Scp106 && LockdownController.IsScp106LockedUp)
             {
                 ev.Player.SendToPocketDimension();
                 ev.IsAllowed = false;
@@ -167,18 +157,13 @@
 
         public void OnEscapingPocketDimension(EscapingPocketDimensionEventArgs ev)
         {
-            if (ev.Player.Role.Type is RoleType.Scp106 && LockdownController.IsScp106LockedUp)
+            if (ev.Player.Role.Type is RoleTypeId.Scp106 && LockdownController.IsScp106LockedUp)
             {
                 ev.Player.SendToPocketDimension();
                 ev.IsAllowed = false;
             }
         }
 
-        public void OnCreatingPortal(CreatingPortalEventArgs ev)
-        {
-            if (LockdownController.IsScp106LockedUp)
-                ev.IsAllowed = false;
-        }
 
         public void OnTeleporting(TeleportingEventArgs ev)
         {
@@ -195,7 +180,7 @@
 
         public void OnInteractingDoor(TriggeringDoorEventArgs ev)
         {
-            if (LockdownController.IsScp079LockedUp && ev.Player.Role.Type is RoleType.Scp079)
+            if (LockdownController.IsScp079LockedUp && ev.Player.Role.Type is RoleTypeId.Scp079)
                 ev.IsAllowed = false;
         }
 
@@ -211,7 +196,7 @@
                 ev.IsAllowed = false;
         }
 
-        public void OnStartingSpeaker(StartingSpeakerEventArgs ev)
+        public void OnChangingSpeakerStatus(ChangingSpeakerStatusEventArgs ev)
         {
             if (LockdownController.IsScp079LockedUp)
                 ev.IsAllowed = false;

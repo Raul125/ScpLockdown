@@ -1,15 +1,17 @@
 ﻿namespace SCPLockdown.API.EventArgs
 {
+    using Exiled.Events.EventArgs.Interfaces;
+    using PlayerRoles;
     using System;
 
-    public class TogglingLockedUpStateEventArgs : EventArgs
+    public class TogglingLockedUpStateEventArgs : EventArgs, IExiledEvent
     {
         public bool IsAllowed { get; set; } = true;
-        public RoleType Scp { get; }
+        public RoleTypeId Scp { get; }
         public bool StateBefore { get; }
         public bool StateAfter { get; }
 
-        public TogglingLockedUpStateEventArgs(RoleType role, bool before, bool after)
+        public TogglingLockedUpStateEventArgs(RoleTypeId role, bool before, bool after)
         {
             Scp = role;
             StateBefore = before;

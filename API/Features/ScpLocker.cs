@@ -1,8 +1,10 @@
-﻿namespace SCPLockdown.API.Features
+﻿using PlayerRoles;
+
+namespace SCPLockdown.API.Features
 {
     public class ScpLocker
     {
-        public RoleType RoleType { get; set; }
+        public RoleTypeId RoleType { get; set; }
         public string Text { get; set; }
         public int TimeToUnlock { get; set; }
 
@@ -11,7 +13,7 @@
 
         }
 
-        public ScpLocker(RoleType role, string text, int timeToUnlock)
+        public ScpLocker(RoleTypeId role, string text, int timeToUnlock)
         {
             RoleType = role;
             Text = text;

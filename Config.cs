@@ -6,20 +6,23 @@
     using System.ComponentModel;
 
     using API.Features;
+    using PlayerRoles;
+
     public sealed class Config : IConfig
     {
         public bool IsEnabled { get; set; } = true;
+        
+        public bool Debug { get; set; } = false;
 
         [Description("The affected SCPs, their shown text when unlocked and the time of their lockdown. (RoleType, string, int => RoleType, text, time in seconds)")]
         public List<ScpLocker> AffectedScps { get; private set; } = new List<ScpLocker>()
         {
-            new ScpLocker(RoleType.Scp079, "Containment Breach!", 60),
-            new ScpLocker(RoleType.Scp173, "Containment Breach!", 60),
-            new ScpLocker(RoleType.Scp096, "Containment Breach!", 60),
-            new ScpLocker(RoleType.Scp106, "Containment Breach!", 60),
-            new ScpLocker(RoleType.Scp049, "Containment Breach!", 60),
-            new ScpLocker(RoleType.Scp93989, "Containment Breach!", 60),
-            new ScpLocker(RoleType.Scp93953, "Containment Breach!", 60)
+            new ScpLocker(RoleTypeId.Scp079, "Containment Breach!", 60),
+            new ScpLocker(RoleTypeId.Scp173, "Containment Breach!", 60),
+            new ScpLocker(RoleTypeId.Scp096, "Containment Breach!", 60),
+            new ScpLocker(RoleTypeId.Scp106, "Containment Breach!", 60),
+            new ScpLocker(RoleTypeId.Scp049, "Containment Breach!", 60),
+            new ScpLocker(RoleTypeId.Scp939, "Containment Breach!", 60)
         };
 
         [Description("Doors that you want to open/unlock/destroy/unlock after x seconds, this doors are locked at the round start. (DoorType, int, bool, bool, bool => DoorType, delay in seconds, unlock?, open?, destroy?)")]
