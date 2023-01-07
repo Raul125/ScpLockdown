@@ -31,10 +31,7 @@ scp_lockdown:
   - role_type: Scp049
     text: Containment Breach!
     time_to_unlock: 60
-  - role_type: Scp93989
-    text: Containment Breach!
-    time_to_unlock: 60
-  - role_type: Scp93953
+  - role_type: Scp939
     text: Containment Breach!
     time_to_unlock: 60
   # Doors that you want to open/unlock/destroy/unlock after x seconds, this doors are locked at the round start. (DoorType, int, bool, bool, bool => DoorType, delay in seconds, unlock?, open?, destroy?)
