@@ -83,5 +83,5 @@ Larry will be put in lockdown inside of his own pocket dimension for the specifi
 #### SCP 049
 The doctor's heavy gate will be locked down for the specified duration.  
 
-#### SCP 939 89 & 53
-The two stair-entry doors will be locked down for the specified duration.  
+#### SCP 939
+The two room doors will be locked down for the specified duration.  
