@@ -62,10 +62,8 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\..\Desktop\Programar\ScpSl\Referencias\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EXILED.6.1.0-rc.1\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
+    <Reference Include="Assembly-CSharp-Publicized">
+      <HintPath>..\..\..\Desktop\Programar\ScpSl\Referencias\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
     <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\EXILED.6.1.0-rc.1\lib\net48\CommandSystem.Core.dll</HintPath>
