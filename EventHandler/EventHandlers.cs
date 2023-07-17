@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using MEC;
-    using Exiled.Events.EventArgs;
     using Exiled.API.Features;
     using Exiled.API.Enums;
     using API.Extensions;
@@ -13,7 +12,6 @@
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp106;
     using Exiled.Events.EventArgs.Scp079;
-    using Exiled.API.Extensions;
     using System.Linq;
 
     public class EventHandlers
@@ -40,7 +38,7 @@
 
             Scp096Door = Room.Get(RoomType.Hcz096).Doors.First(x => x.Type != DoorType.Scp096);
             Scp049Door = Door.Get(DoorType.Scp049Gate);
-            Scp173Door = Door.Get(DoorType.Scp173Connector);
+            Scp173Door = Door.Get(DoorType.Scp173NewGate);
 
             foreach (AffectedDoor affectedoor in plugin.Config.AffectedDoors)
             {

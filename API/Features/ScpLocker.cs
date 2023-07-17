@@ -1,7 +1,7 @@
-﻿using PlayerRoles;
-
-namespace SCPLockdown.API.Features
+﻿namespace SCPLockdown.API.Features
 {
+    using PlayerRoles;
+
     public class ScpLocker
     {
         public RoleTypeId RoleType { get; set; }
