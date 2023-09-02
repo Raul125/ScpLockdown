@@ -13,6 +13,7 @@
     using Exiled.Events.EventArgs.Scp106;
     using Exiled.Events.EventArgs.Scp079;
     using System.Linq;
+    using Exiled.API.Features.Doors;
 
     public class EventHandlers
     {

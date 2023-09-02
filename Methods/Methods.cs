@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using API.Features;
     using API.EventArgs;
+    using Exiled.API.Features.Doors;
 
     public static class Methods
     {
@@ -50,7 +51,10 @@
             if (ev.Destroy)
             {
                 foreach (var door in affectedDoor.Doors)
-                    door.BreakDoor(Interactables.Interobjects.DoorUtils.DoorDamageType.ServerCommand);
+                {
+                    if (door is BreakableDoor brDoor)
+                        brDoor.Break();
+                }
 
                 yield break;
             }

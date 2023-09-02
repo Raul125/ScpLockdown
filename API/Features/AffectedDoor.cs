@@ -1,7 +1,7 @@
 ﻿namespace SCPLockdown.API.Features
 {
     using Exiled.API.Enums;
-    using Exiled.API.Features;
+    using Exiled.API.Features.Doors;
     using System.Collections.Generic;
     using YamlDotNet.Serialization;
 

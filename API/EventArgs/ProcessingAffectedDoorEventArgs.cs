@@ -1,6 +1,6 @@
 ﻿namespace SCPLockdown.API.EventArgs
 {
-    using Exiled.API.Features;
+    using Exiled.API.Features.Doors;
     using Exiled.Events.EventArgs.Interfaces;
     using System;
     using System.Collections.Generic;
