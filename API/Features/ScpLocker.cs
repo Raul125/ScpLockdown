@@ -8,11 +8,6 @@
         public string Text { get; set; }
         public int TimeToUnlock { get; set; }
 
-        public ScpLocker()
-        {
-
-        }
-
         public ScpLocker(RoleTypeId role, string text, int timeToUnlock)
         {
             RoleType = role;
