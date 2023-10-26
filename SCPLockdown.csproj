@@ -9,6 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ScpLockdown</RootNamespace>
     <AssemblyName>ScpLockdown</AssemblyName>
+    <LangVersion>12</LangVersion>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -46,8 +47,8 @@
     <Compile Include="API\Features\CassieAnnouncement.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="API\Features\LockdownController.cs" />
-    <Compile Include="EventHandler\EventHandlers.cs" />
-    <Compile Include="Methods\Methods.cs" />
+    <Compile Include="EventHandlers.cs" />
+    <Compile Include="Methods.cs" />
     <Compile Include="API\Extensions.cs" />
     <Compile Include="ScpLockdown.cs" />
   </ItemGroup>

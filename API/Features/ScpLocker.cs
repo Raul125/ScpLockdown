@@ -1,18 +1,17 @@
-﻿namespace SCPLockdown.API.Features
+﻿namespace SCPLockdown.API.Features;
+
+using PlayerRoles;
+
+public class ScpLocker
 {
-    using PlayerRoles;
+    public RoleTypeId RoleType { get; set; }
+    public string Text { get; set; }
+    public int TimeToUnlock { get; set; }
 
-    public class ScpLocker
+    public ScpLocker(RoleTypeId role, string text, int timeToUnlock)
     {
-        public RoleTypeId RoleType { get; set; }
-        public string Text { get; set; }
-        public int TimeToUnlock { get; set; }
-
-        public ScpLocker(RoleTypeId role, string text, int timeToUnlock)
-        {
-            RoleType = role;
-            Text = text;
-            TimeToUnlock = timeToUnlock;
-        }
+        RoleType = role;
+        Text = text;
+        TimeToUnlock = timeToUnlock;
     }
 }

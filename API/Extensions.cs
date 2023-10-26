@@ -1,46 +1,38 @@
-﻿namespace SCPLockdown.API.Extensions
+﻿namespace SCPLockdown.API.Extensions;
+
+using Exiled.API.Features;
+using Features;
+using PlayerRoles;
+using UnityEngine;
+
+public static class Extensions
 {
-    using Exiled.API.Features;
-    using Features;
-    using PlayerRoles;
-    using UnityEngine;
+    private static readonly Vector3 pocketDimensionPosition = new(0, -1999f, 0);
+    public static void SendToPocketDimension(this Player player) => player.Position = pocketDimensionPosition;
 
-    public static class Extensions
+    public static bool LockedUpState(this RoleTypeId role)
     {
-        private static readonly Vector3 pocketDimensionPosition = new Vector3(0, -1999f, 0);
-        public static void SendToPocketDimension(this Player player) => player.Position = pocketDimensionPosition;
-
-        public static bool LockedUpState(this RoleTypeId role)
+        return role switch
         {
-            switch (role)
-            {
-                case RoleTypeId.Scp079:
-                    return LockdownController.IsScp079LockedUp;
-                case RoleTypeId.Scp096:
-                    return LockdownController.IsScp096LockedUp;
-                case RoleTypeId.Scp106:
-                    return LockdownController.IsScp106LockedUp;
-                case RoleTypeId.Scp049:
-                    return LockdownController.IsScp049LockedUp;
-                case RoleTypeId.Scp173:
-                    return LockdownController.IsScp173LockedUp;
-                case RoleTypeId.Scp939:
-                    return LockdownController.IsScp939LockedUp;
-            }
+            RoleTypeId.Scp079 => LockdownController.IsScp079LockedUp,
+            RoleTypeId.Scp096 => LockdownController.IsScp096LockedUp,
+            RoleTypeId.Scp106 => LockdownController.IsScp106LockedUp,
+            RoleTypeId.Scp049 => LockdownController.IsScp049LockedUp,
+            RoleTypeId.Scp173 => LockdownController.IsScp173LockedUp,
+            RoleTypeId.Scp939 => LockdownController.IsScp939LockedUp,
+            _ => false,
+        };
+    }
 
-            return false;
-        }
+    public static void SendContainmentBreachText(this Player player)
+    {
+        if (!player.IsScp)
+            return;
 
-        public static void SendContainmentBreachText(this Player player)
-        {
-            if (!player.IsScp)
-                return;
-
-            string text = SCPLockdown.Instance.Config.AffectedScps.Find(x => x.RoleType == player.Role).Text;
-            if (SCPLockdown.Instance.Config.UseHints)
-                player.ShowHint(text, 10);
-            else
-                player.Broadcast(10, text);
-        }
+        string text = SCPLockdown.Instance.Config.AffectedScps.Find(x => x.RoleType == player.Role).Text;
+        if (SCPLockdown.Instance.Config.UseHints)
+            player.ShowHint(text, 10);
+        else
+            player.Broadcast(10, text);
     }
 }
