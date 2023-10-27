@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ScpLockdown</RootNamespace>
     <AssemblyName>ScpLockdown</AssemblyName>
-    <LangVersion>12</LangVersion>
+    <LangVersion>11</LangVersion>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
