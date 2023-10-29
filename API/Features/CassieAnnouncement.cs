@@ -10,4 +10,6 @@ public class CassieAnnouncement
         Content = content;
         Delay = delay;
     }
+
+    public CassieAnnouncement() { }
 }

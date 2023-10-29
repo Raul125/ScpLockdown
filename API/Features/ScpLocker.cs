@@ -14,4 +14,6 @@ public class ScpLocker
         Text = text;
         TimeToUnlock = timeToUnlock;
     }
+
+    public ScpLocker() { }
 }

@@ -24,4 +24,6 @@ public class AffectedDoor
         Destroy = destroy;
         Open = open;
     }
+
+    public AffectedDoor() { }
 }
