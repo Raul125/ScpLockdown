@@ -1,12 +1,12 @@
 ﻿namespace SCPLockdown;
 
+using System;
+using Exiled.API.Enums;
+using Exiled.API.Features;
 using PlayerEv = Exiled.Events.Handlers.Player;
 using ServerEv = Exiled.Events.Handlers.Server;
 using Scp079Ev = Exiled.Events.Handlers.Scp079;
 using Scp106Ev = Exiled.Events.Handlers.Scp106;
-using Exiled.API.Enums;
-using Exiled.API.Features;
-using System;
 
 public class SCPLockdown : Plugin<Config>
 {
@@ -15,7 +15,7 @@ public class SCPLockdown : Plugin<Config>
     public override string Name { get; } = "SCPLockdown";
     public override string Prefix { get; } = "scp_lockdown";
     public override Version Version { get; } = new Version(3, 1, 2);
-    public override Version RequiredExiledVersion { get; } = new Version(8, 6, 0);
+    public override Version RequiredExiledVersion { get; } = new Version(8, 7, 0);
     public static SCPLockdown Instance { get; private set; }
     public EventHandlers EventHandlers { get; private set; }
 
@@ -31,7 +31,7 @@ public class SCPLockdown : Plugin<Config>
         ServerEv.RestartingRound += EventHandlers.OnRoundRestarting;
 
         // Player Events
-        PlayerEv.ChangingRole += EventHandlers.OnChangingRole;
+        PlayerEv.Spawning += EventHandlers.OnSpawning;
         PlayerEv.EscapingPocketDimension += EventHandlers.OnEscapingPocketDimension;
         PlayerEv.FailingEscapePocketDimension += EventHandlers.OnFailingEscapePocketDimension;
 
@@ -57,7 +57,7 @@ public class SCPLockdown : Plugin<Config>
         ServerEv.RestartingRound -= EventHandlers.OnRoundRestarting;
 
         // Player Events
-        PlayerEv.ChangingRole -= EventHandlers.OnChangingRole;
+        PlayerEv.Spawning -= EventHandlers.OnSpawning;
         PlayerEv.EscapingPocketDimension -= EventHandlers.OnEscapingPocketDimension;
         PlayerEv.FailingEscapePocketDimension -= EventHandlers.OnFailingEscapePocketDimension;
 

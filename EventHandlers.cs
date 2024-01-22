@@ -131,17 +131,10 @@ public class EventHandlers
     }
 
     // Scp 106 Part
-    public void OnChangingRole(ChangingRoleEventArgs ev)
+    public void OnSpawning(SpawningEventArgs ev)
     {
-        // This makes Scp106 lockdown compatible with scpswap
-        if (LockdownController.IsScp106LockedUp && ev.NewRole == RoleTypeId.Scp106)
-        {
-            RunningCoroutines.Add(Timing.CallDelayed(1, () =>
-            {
-                if (ev.Player.Role.Type is RoleTypeId.Scp106)
-                    ev.Player.SendToPocketDimension();
-            }));
-        }
+        if (LockdownController.IsScp106LockedUp && ev.Player.Role.Type == RoleTypeId.Scp106)
+            ev.Position = Extensions.pocketDimensionPosition;
     }
 
     public void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev)

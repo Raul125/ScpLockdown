@@ -7,7 +7,7 @@ using UnityEngine;
 
 public static class Extensions
 {
-    private static readonly Vector3 pocketDimensionPosition = new(0, -1999f, 0);
+    public static readonly Vector3 pocketDimensionPosition = new(0, -1999f, 0);
     public static void SendToPocketDimension(this Player player) => player.Position = pocketDimensionPosition;
 
     public static bool LockedUpState(this RoleTypeId role)
