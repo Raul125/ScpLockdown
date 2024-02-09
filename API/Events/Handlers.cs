@@ -1,4 +1,4 @@
-﻿namespace SCPLockdown.API.Events;
+﻿namespace ScpLockdown.API.Events;
 
 using Exiled.Events.Features;
 using EventArgs;

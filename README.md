@@ -1,7 +1,7 @@
-# SCPLockdown
+# ScpLockdown
 
-<a href="https://github.com/Raul125/SCPLockdown/releases"><img src="https://img.shields.io/github/v/release/Raul125/SCPLockdown?include_prereleases&label=Release" alt="Releases"></a>
-<a href="https://github.com/Raul125/SCPLockdown/releases"><img src="https://img.shields.io/github/downloads/Raul125/SCPLockdown/total?label=Downloads" alt="Downloads"></a>
+<a href="https://github.com/Raul125/ScpLockdown/releases"><img src="https://img.shields.io/github/v/release/Raul125/ScpLockdown?include_prereleases&label=Release" alt="Releases"></a>
+<a href="https://github.com/Raul125/ScpLockdown/releases"><img src="https://img.shields.io/github/downloads/Raul125/ScpLockdown/total?label=Downloads" alt="Downloads"></a>
 
 Exiled Plugin to lockdown SCPs at the beginning of the round for a specified amount of time and more features, check the config below.<br>
 

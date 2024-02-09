@@ -1,9 +1,11 @@
-﻿namespace SCPLockdown.API.Features;
+﻿namespace ScpLockdown.API.Features;
 
 public class CassieAnnouncement
 {
-    public string Content { get; set; }
-    public int Delay { get; set; }
+    public CassieAnnouncement()
+    {
+
+    }
 
     public CassieAnnouncement(string content, int delay)
     {
@@ -11,5 +13,6 @@ public class CassieAnnouncement
         Delay = delay;
     }
 
-    public CassieAnnouncement() { }
+    public string Content { get; set; }
+    public int Delay { get; set; }
 }

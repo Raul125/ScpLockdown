@@ -1,4 +1,4 @@
-﻿namespace SCPLockdown;
+﻿namespace ScpLockdown;
 
 using Exiled.API.Enums;
 using Exiled.API.Features;
@@ -12,8 +12,8 @@ public static class Methods
 {
     public static void SendCassies()
     {
-        foreach (var cassie in SCPLockdown.Instance.Config.Cassies)
-            EventHandlers.RunningCoroutines.Add(Timing.RunCoroutine(SendCassie(cassie)));
+        foreach (var cassie in ScpLockdown.Instance.Config.Cassies)
+            ScpLockdown.RunningCoroutines.Add(Timing.RunCoroutine(SendCassie(cassie)));
     }
 
     private static IEnumerator<float> SendCassie(CassieAnnouncement cassie)
@@ -27,7 +27,7 @@ public static class Methods
 
     public static void LockAffectedDoors()
     {
-        foreach (var affectedDoors in SCPLockdown.Instance.Config.AffectedDoors)
+        foreach (var affectedDoors in ScpLockdown.Instance.Config.AffectedDoors)
         {
             foreach (var door in affectedDoors.Doors)
                 door.ChangeLock(DoorLockType.SpecialDoorFeature);
@@ -36,8 +36,8 @@ public static class Methods
 
     public static void ProcessDoors()
     {
-        foreach (var door in SCPLockdown.Instance.Config.AffectedDoors)
-            EventHandlers.RunningCoroutines.Add(Timing.RunCoroutine(ProcessDoor(door)));
+        foreach (var door in ScpLockdown.Instance.Config.AffectedDoors)
+            ScpLockdown.RunningCoroutines.Add(Timing.RunCoroutine(ProcessDoor(door)));
     }
 
     private static IEnumerator<float> ProcessDoor(AffectedDoor affectedDoor)
@@ -52,8 +52,8 @@ public static class Methods
         {
             foreach (var door in affectedDoor.Doors)
             {
-                if (door is BreakableDoor brDoor)
-                    brDoor.Break();
+                if (door is BreakableDoor breakableDoor)
+                    breakableDoor.Break();
             }
 
             yield break;

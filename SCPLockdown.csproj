@@ -1,96 +1,31 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9EDFEA9A-C006-4814-BAD2-48D48AAFBCFB}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ScpLockdown</RootNamespace>
-    <AssemblyName>ScpLockdown</AssemblyName>
-    <LangVersion>11</LangVersion>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <TargetFramework>net4.8</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>preview</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x64</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="API\EventArgs\SendingCassieAnnouncementEventArgs.cs" />
-    <Compile Include="API\EventArgs\ProcessingAffectedDoorEventArgs.cs" />
-    <Compile Include="API\EventArgs\TogglingLockedUpStateEventArgs.cs" />
-    <Compile Include="API\Events\Handlers.cs" />
-    <Compile Include="API\Features\AffectedDoor.cs" />
-    <Compile Include="API\Features\ScpLocker.cs" />
-    <Compile Include="API\Features\CassieAnnouncement.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="API\Features\LockdownController.cs" />
-    <Compile Include="EventHandlers.cs" />
-    <Compile Include="Methods.cs" />
-    <Compile Include="API\Extensions.cs" />
-    <Compile Include="ScpLockdown.cs" />
+    <Compile Remove="packages\**" />
+    <EmbeddedResource Remove="packages\**" />
+    <None Remove="packages\**" />
   </ItemGroup>
+
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <PackageReference Include="EXILED" Version="8.8.0" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
+
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EXILED.8.7.0\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
+    <Reference Include="UnityEngine">
+      <HintPath>$(EXILED_REFERENCES)\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EXILED.8.7.0\lib\net48\CommandSystem.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.API, Version=8.7.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.8.7.0\lib\net48\Exiled.API.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.CreditTags, Version=8.7.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.8.7.0\lib\net48\Exiled.CreditTags.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.CustomItems, Version=8.7.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.8.7.0\lib\net48\Exiled.CustomItems.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.CustomRoles, Version=8.7.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.8.7.0\lib\net48\Exiled.CustomRoles.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Events, Version=8.7.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.8.7.0\lib\net48\Exiled.Events.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Loader, Version=8.7.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.8.7.0\lib\net48\Exiled.Loader.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.Permissions, Version=8.7.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.8.7.0\lib\net48\Exiled.Permissions.dll</HintPath>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
       <HintPath>$(EXILED_REFERENCES)\Mirror.dll</HintPath>
@@ -98,22 +33,6 @@
     <Reference Include="Mirror.Components">
       <HintPath>$(EXILED_REFERENCES)\Mirror.Components.dll</HintPath>
     </Reference>
-    <Reference Include="NorthwoodLib, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EXILED.8.7.0\lib\net48\NorthwoodLib.dll</HintPath>
-    </Reference>
-    <Reference Include="PluginAPI, Version=13.1.2.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\EXILED.8.7.0\lib\net48\PluginAPI.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="UnityEngine">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
-      <HintPath>packages\EXILED.8.7.0\lib\net48\YamlDotNet.dll</HintPath>
-    </Reference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>
