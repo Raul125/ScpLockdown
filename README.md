@@ -69,7 +69,7 @@ scp_lockdown:
 ### Lockdown
 
 #### SCP 173
-Peanut's connector door will be locked down for the specified duration because Heavy Gate is opened by game base.  
+Peanut's gate will be locked down for the specified duration.
 
 #### SCP 079
 Computer cannot interact with doors, elevators and "cameras" such for specified duration.
@@ -84,4 +84,4 @@ Larry will be put in lockdown inside of his own pocket dimension for the specifi
 The doctor's heavy gate will be locked down for the specified duration.  
 
 #### SCP 939
-The two room doors will be locked down for the specified duration.  
+The room doors will be locked down for the specified duration. 
