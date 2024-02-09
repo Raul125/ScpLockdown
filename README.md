@@ -5,8 +5,6 @@
 
 Exiled Plugin to lockdown SCPs at the beginning of the round for a specified amount of time and more features, check the config below.<br>
 
-Original Dev: https://github.com/AlmightyLks
-
 ---
 ### Configs
 
