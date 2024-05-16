@@ -3,7 +3,7 @@
 <a href="https://github.com/Raul125/ScpLockdown/releases"><img src="https://img.shields.io/github/v/release/Raul125/ScpLockdown?include_prereleases&label=Release" alt="Releases"></a>
 <a href="https://github.com/Raul125/ScpLockdown/releases"><img src="https://img.shields.io/github/downloads/Raul125/ScpLockdown/total?label=Downloads" alt="Downloads"></a>
 
-Exiled Plugin to lockdown SCPs at the beginning of the round for a specified amount of time and more features, check the config below.<br>
+Exiled Plugin to lockdown SCPs at the round beginning for a specified amount of time, and more features, check the config below.<br>
 
 ---
 ### Configs
@@ -12,7 +12,7 @@ Default:
 ```yaml
 scp_lockdown:
   is_enabled: true
-  # The affected SCPs, their shown text when unlocked and the time of their lockdown. (RoleType, string, int => RoleType, text, time in seconds)
+  # The affected SCPs, the shown text when unlocked and the time of their lockdown. (RoleType, string, int => RoleType, text, time in seconds)
   affected_scps:
   - role_type: Scp079
     text: Containment Breach!
@@ -32,7 +32,7 @@ scp_lockdown:
   - role_type: Scp939
     text: Containment Breach!
     time_to_unlock: 60
-  # Doors that you want to open/unlock/destroy/unlock after x seconds, this doors are locked at the round start. (DoorType, int, bool, bool, bool => DoorType, delay in seconds, unlock?, open?, destroy?)
+  # Doors that you want to open/unlock/destroy/unlock after x seconds, this doors are locked at round start. (DoorType, int, bool, bool, bool => DoorType, delay in seconds, unlock?, open?, destroy?)
   affected_doors:
   - door_type: CheckpointLczA
     delay: 60
@@ -55,7 +55,7 @@ scp_lockdown:
     delay: 60
   - content: containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols
     delay: 120
-  # Can the Scp-079 use/switch cameras while is in lockdown?
+  # Can the Scp-079 use/switch cameras while in lockdown?
   scp079_camera: true
   # the plugin should use hints or broadcasts?.
   use_hints: true
@@ -64,22 +64,3 @@ scp_lockdown:
 **DoorTypes for affected_doors:** https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Enums/DoorType.cs
 
 ---
-### Lockdown
-
-#### SCP 173
-Peanut's gate will be locked down for the specified duration.
-
-#### SCP 079
-Computer cannot interact with doors, elevators and "cameras" such for specified duration.
-
-#### SCP 096
-Shy Guy's door towards the HCZ will be locked down for the specified duration.  
-
-#### SCP 106
-Larry will be put in lockdown inside of his own pocket dimension for the specified duration.  
-
-#### SCP 049
-The doctor's heavy gate will be locked down for the specified duration.  
-
-#### SCP 939
-The room doors will be locked down for the specified duration. 
