@@ -1,16 +1,28 @@
-﻿namespace ScpLockdown.API.Events;
+﻿using Exiled.Events.Features;
+using ScpLockdown.API.EventArgs;
 
-using Exiled.Events.Features;
-using EventArgs;
+namespace ScpLockdown.API.Events;
 
 public static class Handlers
 {
-    public static Event<ProcessingAffectedDoorEventArgs> ProcessingAffectedDoor = new();
-    public static void OnProcessingAffectedDoor(ProcessingAffectedDoorEventArgs ev) => ProcessingAffectedDoor.InvokeSafely(ev);
+    public static readonly Event<ProcessingAffectedDoorEventArgs> ProcessingAffectedDoor = new();
 
-    public static Event<SendingCassieAnnouncementEventArgs> SendingCassieAnnouncements = new();
-    public static void OnSendingCassieAnnouncements(SendingCassieAnnouncementEventArgs ev) => SendingCassieAnnouncements.InvokeSafely(ev);
+    public static readonly Event<SendingCassieAnnouncementEventArgs> SendingCassieAnnouncements = new();
 
-    public static Event<TogglingLockedUpStateEventArgs> TogglingLockedUpState = new();
-    public static void OnChangingLockedUpStatus(TogglingLockedUpStateEventArgs ev) => TogglingLockedUpState.InvokeSafely(ev);
+    public static readonly Event<TogglingLockedUpStateEventArgs> TogglingLockedUpState = new();
+
+    public static void OnProcessingAffectedDoor(ProcessingAffectedDoorEventArgs ev)
+    {
+        ProcessingAffectedDoor.InvokeSafely(ev);
+    }
+
+    public static void OnSendingCassieAnnouncements(SendingCassieAnnouncementEventArgs ev)
+    {
+        SendingCassieAnnouncements.InvokeSafely(ev);
+    }
+
+    public static void OnChangingLockedUpStatus(TogglingLockedUpStateEventArgs ev)
+    {
+        TogglingLockedUpState.InvokeSafely(ev);
+    }
 }

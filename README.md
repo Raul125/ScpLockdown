@@ -3,12 +3,15 @@
 <a href="https://github.com/Raul125/ScpLockdown/releases"><img src="https://img.shields.io/github/v/release/Raul125/ScpLockdown?include_prereleases&label=Release" alt="Releases"></a>
 <a href="https://github.com/Raul125/ScpLockdown/releases"><img src="https://img.shields.io/github/downloads/Raul125/ScpLockdown/total?label=Downloads" alt="Downloads"></a>
 
-Exiled Plugin to lockdown SCPs at the round beginning for a specified amount of time, and more features, check the config below.<br>
+Exiled Plugin to lockdown SCPs at the round beginning for a specified amount of time, and more features, check the
+config below.<br>
 
 ---
+
 ### Configs
 
-Default:  
+Default:
+
 ```yaml
 scp_lockdown:
   is_enabled: true

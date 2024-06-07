@@ -4,7 +4,6 @@ public class CassieAnnouncement
 {
     public CassieAnnouncement()
     {
-
     }
 
     public CassieAnnouncement(string content, int delay)
@@ -13,6 +12,6 @@ public class CassieAnnouncement
         Delay = delay;
     }
 
-    public string Content { get; set; }
-    public int Delay { get; set; }
+    public string Content { get; }
+    public int Delay { get; }
 }

@@ -1,11 +1,10 @@
-﻿namespace ScpLockdown.API.EventArgs;
-
-using Exiled.API.Features.Doors;
+﻿using Exiled.API.Features.Doors;
 using Exiled.Events.EventArgs.Interfaces;
-using System;
-using System.Collections.Generic;
 
-public class ProcessingAffectedDoorEventArgs(List<Door> doors, int delay, bool unlock, bool open, bool destroy) : EventArgs, IExiledEvent
+namespace ScpLockdown.API.EventArgs;
+
+public class ProcessingAffectedDoorEventArgs(List<Door> doors, int delay, bool unlock, bool open, bool destroy)
+    : System.EventArgs, IExiledEvent
 {
     public bool IsAllowed { get; set; } = true;
     public List<Door> Doors { get; } = doors;

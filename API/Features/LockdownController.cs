@@ -1,14 +1,12 @@
-﻿namespace ScpLockdown.API.Features;
-
-using Exiled.API.Enums;
+﻿using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
-using MEC;
-using EventArgs;
-using Extensions;
-using System.Collections.Generic;
-using PlayerRoles;
 using Exiled.API.Features.Doors;
+using MEC;
+using PlayerRoles;
+using ScpLockdown.API.EventArgs;
+
+namespace ScpLockdown.API.Features;
 
 public static class LockdownController
 {
@@ -36,9 +34,9 @@ public static class LockdownController
             ScpLockStates[key] = false;
     }
 
-    public static void LockdownSCP(RoleTypeId role, int time)
+    public static void LockdownScp(RoleTypeId role, int time)
     {
-        ScpLockdown.RunningCoroutines.Add(Timing.RunCoroutine(UnlockSCP(role, time)));
+        ScpLockdown.RunningCoroutines.Add(Timing.RunCoroutine(UnlockScp(role, time)));
         if (!ScpDoors.TryGetValue(role, out var doors))
             return;
 
@@ -46,7 +44,7 @@ public static class LockdownController
             door.ChangeLock(DoorLockType.SpecialDoorFeature);
     }
 
-    private static IEnumerator<float> UnlockSCP(RoleTypeId role, int time)
+    private static IEnumerator<float> UnlockScp(RoleTypeId role, int time)
     {
         yield return Timing.WaitForSeconds(time);
 
@@ -59,10 +57,8 @@ public static class LockdownController
         ToggleLockedUpState(role);
 
         if (ScpDoors.TryGetValue(role, out var doors))
-        {
             foreach (var door in doors)
                 door.Unlock();
-        }
 
         if (role == RoleTypeId.Scp106)
         {

@@ -1,73 +1,72 @@
-﻿namespace ScpLockdown;
-
-using System;
-using Exiled.API.Enums;
+﻿using Exiled.API.Enums;
 using Exiled.API.Features;
+using MEC;
 using PlayerEv = Exiled.Events.Handlers.Player;
 using ServerEv = Exiled.Events.Handlers.Server;
-using Scp079Ev = Exiled.Events.Handlers.Scp079;
 using Scp106Ev = Exiled.Events.Handlers.Scp106;
-using MEC;
+using Scp079Ev = Exiled.Events.Handlers.Scp079;
+
+namespace ScpLockdown;
 
 public class ScpLockdown : Plugin<Config>
 {
-    public override PluginPriority Priority { get; } = PluginPriority.Medium;
-    public override string Author { get; } = "Raul125";
-    public override string Name { get; } = "ScpLockdown";
-    public override string Prefix { get; } = "scp_lockdown";
-    public override Version Version { get; } = new Version(3, 2, 0);
-    public override Version RequiredExiledVersion { get; } = new Version(8, 8, 0);
-
-    public static ScpLockdown Instance { get; private set; }
     public static readonly List<CoroutineHandle> RunningCoroutines = [];
 
-    private EventHandlers eventHandlers;
+    private EventHandlers _eventHandlers;
+    public override PluginPriority Priority => PluginPriority.Medium;
+    public override string Author => "Raul125";
+    public override string Name => "ScpLockdown";
+    public override string Prefix => "scp_lockdown";
+    public override Version Version { get; } = new(3, 2, 1);
+    public override Version RequiredExiledVersion { get; } = new(8, 9, 4);
+
+    public static ScpLockdown Instance { get; private set; }
 
     public override void OnEnabled()
     {
         Instance = this;
-        eventHandlers = new EventHandlers(this);
+        _eventHandlers = new EventHandlers(this);
 
-        ServerEv.RoundStarted += eventHandlers.OnRoundStart;
-        ServerEv.WaitingForPlayers += eventHandlers.OnWaitingForPlayers;
-        ServerEv.RoundEnded += eventHandlers.OnRoundEnded;
-        ServerEv.RestartingRound += eventHandlers.OnRoundRestarting;
+        ServerEv.RoundStarted += _eventHandlers.OnRoundStart;
+        ServerEv.WaitingForPlayers += _eventHandlers.OnWaitingForPlayers;
+        ServerEv.RoundEnded += EventHandlers.OnRoundEnded;
+        ServerEv.RestartingRound += EventHandlers.OnRoundRestarting;
 
-        PlayerEv.Spawning += eventHandlers.OnSpawning;
-        PlayerEv.EscapingPocketDimension += eventHandlers.OnEscapingPocketDimension;
-        PlayerEv.FailingEscapePocketDimension += eventHandlers.OnFailingEscapePocketDimension;
+        PlayerEv.Spawning += EventHandlers.OnSpawning;
+        PlayerEv.EscapingPocketDimension += EventHandlers.OnEscapingPocketDimension;
+        PlayerEv.FailingEscapePocketDimension += EventHandlers.OnFailingEscapePocketDimension;
 
-        Scp106Ev.Teleporting += eventHandlers.OnTeleporting;
+        Scp106Ev.Teleporting += EventHandlers.OnTeleporting;
 
-        Scp079Ev.InteractingTesla += eventHandlers.OnInteractingTesla;
-        Scp079Ev.ChangingCamera += eventHandlers.OnChangingCamera;
-        Scp079Ev.ElevatorTeleporting += eventHandlers.OnElevatorTeleport;
-        Scp079Ev.ChangingSpeakerStatus += eventHandlers.OnChangingSpeakerStatus;
-        Scp079Ev.TriggeringDoor += eventHandlers.OnInteractingDoor;
+        Scp079Ev.InteractingTesla += EventHandlers.OnInteractingTesla;
+        Scp079Ev.ChangingCamera += _eventHandlers.OnChangingCamera;
+        Scp079Ev.ElevatorTeleporting += _eventHandlers.OnElevatorTeleport;
+        Scp079Ev.ChangingSpeakerStatus += EventHandlers.OnChangingSpeakerStatus;
+        Scp079Ev.TriggeringDoor += EventHandlers.OnInteractingDoor;
 
         base.OnEnabled();
     }
 
     public override void OnDisabled()
     {
-        ServerEv.RoundStarted -= eventHandlers.OnRoundStart;
-        ServerEv.WaitingForPlayers -= eventHandlers.OnWaitingForPlayers;
-        ServerEv.RoundEnded -= eventHandlers.OnRoundEnded;
-        ServerEv.RestartingRound -= eventHandlers.OnRoundRestarting;
+        ServerEv.RoundStarted -= _eventHandlers.OnRoundStart;
+        ServerEv.WaitingForPlayers -= _eventHandlers.OnWaitingForPlayers;
+        ServerEv.RoundEnded -= EventHandlers.OnRoundEnded;
+        ServerEv.RestartingRound -= EventHandlers.OnRoundRestarting;
 
-        PlayerEv.Spawning -= eventHandlers.OnSpawning;
-        PlayerEv.EscapingPocketDimension -= eventHandlers.OnEscapingPocketDimension;
-        PlayerEv.FailingEscapePocketDimension -= eventHandlers.OnFailingEscapePocketDimension;
+        PlayerEv.Spawning -= EventHandlers.OnSpawning;
+        PlayerEv.EscapingPocketDimension -= EventHandlers.OnEscapingPocketDimension;
+        PlayerEv.FailingEscapePocketDimension -= EventHandlers.OnFailingEscapePocketDimension;
 
-        Scp106Ev.Teleporting -= eventHandlers.OnTeleporting;
+        Scp106Ev.Teleporting -= EventHandlers.OnTeleporting;
 
-        Scp079Ev.InteractingTesla -= eventHandlers.OnInteractingTesla;
-        Scp079Ev.ChangingCamera -= eventHandlers.OnChangingCamera;
-        Scp079Ev.ElevatorTeleporting -= eventHandlers.OnElevatorTeleport;
-        Scp079Ev.ChangingSpeakerStatus -= eventHandlers.OnChangingSpeakerStatus;
-        Scp079Ev.TriggeringDoor -= eventHandlers.OnInteractingDoor;
+        Scp079Ev.InteractingTesla -= EventHandlers.OnInteractingTesla;
+        Scp079Ev.ChangingCamera -= _eventHandlers.OnChangingCamera;
+        Scp079Ev.ElevatorTeleporting -= _eventHandlers.OnElevatorTeleport;
+        Scp079Ev.ChangingSpeakerStatus -= EventHandlers.OnChangingSpeakerStatus;
+        Scp079Ev.TriggeringDoor -= EventHandlers.OnInteractingDoor;
 
-        eventHandlers = null;
+        _eventHandlers = null;
         Instance = null;
 
         base.OnDisabled();

@@ -1,38 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net4.8</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <LangVersion>preview</LangVersion>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net4.8</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>preview</LangVersion>
+        <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="packages\**" />
-    <EmbeddedResource Remove="packages\**" />
-    <None Remove="packages\**" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="packages\**"/>
+        <EmbeddedResource Remove="packages\**"/>
+        <None Remove="packages\**"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="EXILED" Version="8.8.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="EXILED" Version="8.9.2"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="Mirror">
-      <HintPath>$(EXILED_REFERENCES)\Mirror.dll</HintPath>
-    </Reference>
-    <Reference Include="Mirror.Components">
-      <HintPath>$(EXILED_REFERENCES)\Mirror.Components.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Assembly-CSharp-firstpass">
+            <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine">
+            <HintPath>$(EXILED_REFERENCES)\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="Mirror">
+            <HintPath>$(EXILED_REFERENCES)\Mirror.dll</HintPath>
+        </Reference>
+        <Reference Include="Mirror.Components">
+            <HintPath>$(EXILED_REFERENCES)\Mirror.Components.dll</HintPath>
+        </Reference>
+    </ItemGroup>
 
 </Project>

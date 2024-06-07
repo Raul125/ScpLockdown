@@ -1,11 +1,10 @@
-﻿namespace ScpLockdown.API.EventArgs;
+﻿using Exiled.Events.EventArgs.Interfaces;
 
-using Exiled.Events.EventArgs.Interfaces;
-using System;
+namespace ScpLockdown.API.EventArgs;
 
-public class SendingCassieAnnouncementEventArgs(string message, int delay) : EventArgs, IExiledEvent
+public class SendingCassieAnnouncementEventArgs(string message, int delay) : System.EventArgs, IExiledEvent
 {
     public bool IsAllowed { get; set; } = true;
-    public string Message { get; } = message;
-    public int Delay { get; } = delay;
+    public string Message { get; set; } = message;
+    public int Delay { get; set; } = delay;
 }

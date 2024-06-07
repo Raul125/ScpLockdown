@@ -1,12 +1,11 @@
-﻿namespace ScpLockdown;
-
-using Exiled.API.Enums;
+﻿using Exiled.API.Enums;
 using Exiled.API.Features;
-using MEC;
-using System.Collections.Generic;
-using API.Features;
-using API.EventArgs;
 using Exiled.API.Features.Doors;
+using MEC;
+using ScpLockdown.API.EventArgs;
+using ScpLockdown.API.Features;
+
+namespace ScpLockdown;
 
 public static class Methods
 {
@@ -27,11 +26,8 @@ public static class Methods
 
     public static void LockAffectedDoors()
     {
-        foreach (var affectedDoors in ScpLockdown.Instance.Config.AffectedDoors)
-        {
-            foreach (var door in affectedDoors.Doors)
-                door.ChangeLock(DoorLockType.SpecialDoorFeature);
-        }
+        foreach (var door in ScpLockdown.Instance.Config.AffectedDoors.SelectMany(affectedDoors => affectedDoors.Doors))
+            door.ChangeLock(DoorLockType.SpecialDoorFeature);
     }
 
     public static void ProcessDoors()
@@ -43,7 +39,8 @@ public static class Methods
     private static IEnumerator<float> ProcessDoor(AffectedDoor affectedDoor)
     {
         yield return Timing.WaitForSeconds(affectedDoor.Delay);
-        var ev = new ProcessingAffectedDoorEventArgs(affectedDoor.Doors, affectedDoor.Delay, affectedDoor.Unlock, affectedDoor.Open, affectedDoor.Destroy);
+        var ev = new ProcessingAffectedDoorEventArgs(affectedDoor.Doors, affectedDoor.Delay, affectedDoor.Unlock,
+            affectedDoor.Open, affectedDoor.Destroy);
 
         if (!ev.IsAllowed)
             yield break;
@@ -51,24 +48,20 @@ public static class Methods
         if (ev.Destroy)
         {
             foreach (var door in affectedDoor.Doors)
-            {
                 if (door is BreakableDoor breakableDoor)
                     breakableDoor.Break();
-            }
 
             yield break;
         }
 
         if (ev.Unlock)
-        {
             foreach (var door in affectedDoor.Doors)
                 door.Unlock();
-        }
 
-        if (ev.Open)
-        {
-            foreach (var door in affectedDoor.Doors)
-                door.IsOpen = true;
-        }
+        if (!ev.Open) 
+            yield break;
+        
+        foreach (var door in affectedDoor.Doors)
+            door.IsOpen = true;
     }
 }
