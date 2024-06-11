@@ -48,15 +48,19 @@ public static class Methods
         if (ev.Destroy)
         {
             foreach (var door in affectedDoor.Doors)
+            {
                 if (door is BreakableDoor breakableDoor)
                     breakableDoor.Break();
-
+            }
+            
             yield break;
         }
 
         if (ev.Unlock)
-            foreach (var door in affectedDoor.Doors)
+        {
+            foreach (var door in affectedDoor.Doors) 
                 door.Unlock();
+        }
 
         if (!ev.Open) 
             yield break;
