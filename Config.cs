@@ -10,7 +10,7 @@ public class Config : IConfig
 {
     [Description(
         "The affected SCPs, the shown text when unlocked and the time of their lockdown. (RoleType, string, int => RoleType, text, time in seconds)")]
-    public List<ScpLocker> AffectedScps { get; private set; } =
+    public List<ScpLocker> AffectedScps { get; set; } =
     [
         new ScpLocker(RoleTypeId.Scp079, "Containment Breach!", 60),
         new ScpLocker(RoleTypeId.Scp173, "Containment Breach!", 60),
@@ -22,7 +22,7 @@ public class Config : IConfig
 
     [Description(
         "Doors that you want to open/unlock/destroy/unlock after x seconds, this doors are locked at round start. (DoorType, int, bool, bool, bool => DoorType, delay in seconds, unlock?, open?, destroy?)")]
-    public List<AffectedDoor> AffectedDoors { get; private set; } =
+    public List<AffectedDoor> AffectedDoors { get; set; } =
     [
         new AffectedDoor(DoorType.CheckpointLczA, 60, true, false, false),
         new AffectedDoor(DoorType.CheckpointLczB, 60, true, false, false),
@@ -31,7 +31,7 @@ public class Config : IConfig
 
     [Description(
         "Use this if you want send cassies with a specified timing. (string, int => cassie text, delay in seconds)")]
-    public List<CassieAnnouncement> Cassies { get; private set; } =
+    public List<CassieAnnouncement> Cassies { get; set; } =
     [
         new CassieAnnouncement(
             "containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols",
@@ -42,10 +42,10 @@ public class Config : IConfig
     ];
 
     [Description("Can the Scp-079 use/switch cameras while in lockdown?")]
-    public bool Scp079Camera { get; private set; } = true;
+    public bool Scp079Camera { get; set; } = true;
 
     [Description("the plugin should use hints or broadcasts?.")]
-    public bool UseHints { get; private set; } = true;
+    public bool UseHints { get; set; } = true;
 
     public bool IsEnabled { get; set; } = true;
 

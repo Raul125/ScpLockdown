@@ -40,7 +40,7 @@ public static class Methods
     {
         yield return Timing.WaitForSeconds(affectedDoor.Delay);
         var ev = new ProcessingAffectedDoorEventArgs(affectedDoor.Doors, affectedDoor.Delay, affectedDoor.Unlock,
-            affectedDoor.Open, affectedDoor.Destroy);
+                                                     affectedDoor.Open, affectedDoor.Destroy);
 
         if (!ev.IsAllowed)
             yield break;
@@ -48,23 +48,19 @@ public static class Methods
         if (ev.Destroy)
         {
             foreach (var door in affectedDoor.Doors)
-            {
                 if (door is BreakableDoor breakableDoor)
                     breakableDoor.Break();
-            }
-            
+
             yield break;
         }
 
         if (ev.Unlock)
-        {
-            foreach (var door in affectedDoor.Doors) 
+            foreach (var door in affectedDoor.Doors)
                 door.Unlock();
-        }
 
-        if (!ev.Open) 
+        if (!ev.Open)
             yield break;
-        
+
         foreach (var door in affectedDoor.Doors)
             door.IsOpen = true;
     }

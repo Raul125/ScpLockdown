@@ -12,6 +12,6 @@ public class CassieAnnouncement
         Delay = delay;
     }
 
-    public string Content { get; }
-    public int Delay { get; }
+    public string Content { get; init; }
+    public int Delay { get; init; }
 }

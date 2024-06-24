@@ -6,7 +6,7 @@ namespace ScpLockdown.API.Features;
 
 public class AffectedDoor
 {
-    [YamlIgnore] 
+    [YamlIgnore]
     public readonly List<Door> Doors = [];
 
     public AffectedDoor()
@@ -22,9 +22,9 @@ public class AffectedDoor
         Destroy = destroy;
     }
 
-    public DoorType DoorType { get; }
-    public int Delay { get; }
-    public bool Unlock { get; }
-    public bool Destroy { get; }
-    public bool Open { get; }
+    public DoorType DoorType { get; init; }
+    public int Delay { get; init; }
+    public bool Unlock { get; init; }
+    public bool Destroy { get; init; }
+    public bool Open { get; init; }
 }

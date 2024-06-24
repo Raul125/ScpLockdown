@@ -15,7 +15,7 @@ public class ScpLocker
         TimeToUnlock = timeToUnlock;
     }
 
-    public RoleTypeId RoleType { get; }
-    public string Text { get; }
-    public int TimeToUnlock { get; }
+    public RoleTypeId RoleType { get; init; }
+    public string Text { get; init; }
+    public int TimeToUnlock { get; init; }
 }

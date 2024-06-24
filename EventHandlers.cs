@@ -19,7 +19,7 @@ public class EventHandlers(ScpLockdown scpLockdown)
     {
         LockdownController.ScpDoors.Add(RoleTypeId.Scp939, Room.Get(RoomType.Hcz939).Doors);
         LockdownController.ScpDoors.Add(RoleTypeId.Scp096,
-            Room.Get(RoomType.Hcz096).Doors.Where(x => x.Type != DoorType.Scp096));
+                                        Room.Get(RoomType.Hcz096).Doors.Where(x => x.Type != DoorType.Scp096));
         LockdownController.ScpDoors.Add(RoleTypeId.Scp049, Door.List.Where(x => x.Type == DoorType.Scp049Gate));
         LockdownController.ScpDoors.Add(RoleTypeId.Scp173, Door.List.Where(x => x.Type == DoorType.Scp173NewGate));
 
@@ -39,10 +39,11 @@ public class EventHandlers(ScpLockdown scpLockdown)
 
         yield return Timing.WaitForSeconds(1);
 
-        foreach (var scp in from scp in scpLockdown.Config.AffectedScps 
-                 let state = scp.RoleType.LockedUpState() 
-                 let ev = new TogglingLockedUpStateEventArgs(scp.RoleType, state, !state) 
-                 where ev.IsAllowed select scp)
+        foreach (var scp in from scp in scpLockdown.Config.AffectedScps
+                            let state = scp.RoleType.LockedUpState()
+                            let ev = new TogglingLockedUpStateEventArgs(scp.RoleType, state, !state)
+                            where ev.IsAllowed
+                            select scp)
         {
             LockdownController.ToggleLockedUpState(scp.RoleType);
             LockdownController.LockdownScp(scp.RoleType, scp.TimeToUnlock);
@@ -75,18 +76,18 @@ public class EventHandlers(ScpLockdown scpLockdown)
 
     public static void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev)
     {
-        if (ev.Player.Role.Type is not RoleTypeId.Scp106 || !RoleTypeId.Scp106.LockedUpState()) 
+        if (ev.Player.Role.Type is not RoleTypeId.Scp106 || !RoleTypeId.Scp106.LockedUpState())
             return;
-        
+
         ev.Player.SendToPocketDimension();
         ev.IsAllowed = false;
     }
 
     public static void OnEscapingPocketDimension(EscapingPocketDimensionEventArgs ev)
     {
-        if (ev.Player.Role.Type is not RoleTypeId.Scp106 || !RoleTypeId.Scp106.LockedUpState()) 
+        if (ev.Player.Role.Type is not RoleTypeId.Scp106 || !RoleTypeId.Scp106.LockedUpState())
             return;
-        
+
         ev.Player.SendToPocketDimension();
         ev.IsAllowed = false;
     }
