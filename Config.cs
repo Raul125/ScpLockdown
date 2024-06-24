@@ -8,8 +8,7 @@ namespace ScpLockdown;
 
 public class Config : IConfig
 {
-    [Description(
-        "The affected SCPs, the shown text when unlocked and the time of their lockdown. (RoleType, string, int => RoleType, text, time in seconds)")]
+    [Description("The affected SCPs, the shown text when unlocked and the time of their lockdown. (RoleType, string, int => RoleType, text, time in seconds)")]
     public List<ScpLocker> AffectedScps { get; set; } =
     [
         new ScpLocker(RoleTypeId.Scp079, "Containment Breach!", 60),
@@ -20,8 +19,7 @@ public class Config : IConfig
         new ScpLocker(RoleTypeId.Scp939, "Containment Breach!", 60)
     ];
 
-    [Description(
-        "Doors that you want to open/unlock/destroy/unlock after x seconds, this doors are locked at round start. (DoorType, int, bool, bool, bool => DoorType, delay in seconds, unlock?, open?, destroy?)")]
+    [Description("Doors that you want to open/unlock/destroy/unlock after x seconds, this doors are locked at round start. (DoorType, int, bool, bool, bool => DoorType, delay in seconds, unlock?, open?, destroy?)")]
     public List<AffectedDoor> AffectedDoors { get; set; } =
     [
         new AffectedDoor(DoorType.CheckpointLczA, 60, true, false, false),
@@ -29,8 +27,7 @@ public class Config : IConfig
         new AffectedDoor(DoorType.PrisonDoor, 60, false, true, false)
     ];
 
-    [Description(
-        "Use this if you want send cassies with a specified timing. (string, int => cassie text, delay in seconds)")]
+    [Description("Use this if you want send cassies with a specified timing. (string, int => cassie text, delay in seconds)")]
     public List<CassieAnnouncement> Cassies { get; set; } =
     [
         new CassieAnnouncement(
