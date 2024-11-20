@@ -10,6 +10,7 @@ using PlayerRoles;
 using ScpLockdown.API;
 using ScpLockdown.API.EventArgs;
 using ScpLockdown.API.Features;
+using UnityEngine;
 
 namespace ScpLockdown;
 
@@ -32,12 +33,10 @@ public class EventHandlers(ScpLockdown scpLockdown)
         Methods.LockAffectedDoors();
     }
 
-    public IEnumerator<float> OnRoundStart()
+    public void OnRoundStart()
     {
         Methods.ProcessDoors();
         Methods.SendCassies();
-
-        yield return Timing.WaitForSeconds(1);
 
         foreach (var scp in from scp in scpLockdown.Config.AffectedScps
                             let state = scp.RoleType.LockedUpState()
@@ -45,7 +44,6 @@ public class EventHandlers(ScpLockdown scpLockdown)
                             where ev.IsAllowed
                             select scp)
         {
-            LockdownController.ToggleLockedUpState(scp.RoleType);
             LockdownController.LockdownScp(scp.RoleType, scp.TimeToUnlock);
         }
     }
@@ -71,7 +69,7 @@ public class EventHandlers(ScpLockdown scpLockdown)
     public static void OnSpawning(SpawningEventArgs ev)
     {
         if (RoleTypeId.Scp106.LockedUpState() && ev.Player.Role.Type == RoleTypeId.Scp106)
-            ev.Position = Extensions.PocketDimensionPosition;
+            ev.Position = Room.Get(RoomType.Pocket).Position + Vector3.up;
     }
 
     public static void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev)
@@ -79,7 +77,7 @@ public class EventHandlers(ScpLockdown scpLockdown)
         if (ev.Player.Role.Type is not RoleTypeId.Scp106 || !RoleTypeId.Scp106.LockedUpState())
             return;
 
-        ev.Player.SendToPocketDimension();
+        ev.Player.Teleport(RoomType.Pocket);
         ev.IsAllowed = false;
     }
 
@@ -88,7 +86,7 @@ public class EventHandlers(ScpLockdown scpLockdown)
         if (ev.Player.Role.Type is not RoleTypeId.Scp106 || !RoleTypeId.Scp106.LockedUpState())
             return;
 
-        ev.Player.SendToPocketDimension();
+        ev.Player.Teleport(RoomType.Pocket);
         ev.IsAllowed = false;
     }
 

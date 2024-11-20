@@ -21,7 +21,12 @@ public static class Methods
         var ev = new SendingCassieAnnouncementEventArgs(cassie.Content, cassie.Delay);
 
         if (ev.IsAllowed)
-            Cassie.Message(cassie.Content, false, false);
+        {
+            if (cassie.Subtitle != string.Empty)
+                Cassie.MessageTranslated(cassie.Content, cassie.Subtitle, false, false);
+            else
+                Cassie.Message(cassie.Content, false, false);
+        }
     }
 
     public static void LockAffectedDoors()
@@ -48,8 +53,10 @@ public static class Methods
         if (ev.Destroy)
         {
             foreach (var door in affectedDoor.Doors)
+            {
                 if (door is BreakableDoor breakableDoor)
                     breakableDoor.Break();
+            }
 
             yield break;
         }

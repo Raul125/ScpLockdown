@@ -14,26 +14,25 @@ Default:
 
 ```yaml
 scp_lockdown:
-  is_enabled: true
-  # The affected SCPs, the shown text when unlocked and the time of their lockdown. (RoleType, string, int => RoleType, text, time in seconds)
+# The affected SCPs, the shown text when unlocked and the time of their lockdown. (RoleType, string, int => RoleType, text, time in seconds)
   affected_scps:
   - role_type: Scp079
-    text: Containment Breach!
+    text: 'Containment Breach!'
     time_to_unlock: 60
   - role_type: Scp173
-    text: Containment Breach!
+    text: 'Containment Breach!'
     time_to_unlock: 60
   - role_type: Scp096
-    text: Containment Breach!
+    text: 'Containment Breach!'
     time_to_unlock: 60
   - role_type: Scp106
-    text: Containment Breach!
+    text: 'Containment Breach!'
     time_to_unlock: 60
   - role_type: Scp049
-    text: Containment Breach!
+    text: 'Containment Breach!'
     time_to_unlock: 60
   - role_type: Scp939
-    text: Containment Breach!
+    text: 'Containment Breach!'
     time_to_unlock: 60
   # Doors that you want to open/unlock/destroy/unlock after x seconds, this doors are locked at round start. (DoorType, int, bool, bool, bool => DoorType, delay in seconds, unlock?, open?, destroy?)
   affected_doors:
@@ -51,19 +50,25 @@ scp_lockdown:
     delay: 60
     unlock: false
     destroy: false
-    open: false
+    open: true
   # Use this if you want send cassies with a specified timing. (string, int => cassie text, delay in seconds)
   cassies:
-  - content: containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols
+  - content: 'containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols'
+    subtitle: '¡Contaiment breach!'
     delay: 60
-  - content: containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols
+  - content: 'containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols'
+    subtitle: '¡Contaiment breach!'
     delay: 120
   # Can the Scp-079 use/switch cameras while in lockdown?
   scp079_camera: true
   # the plugin should use hints or broadcasts?.
   use_hints: true
+  # the plugin should clear the previous broadcasts?.
+  clear_broadcasts: true
+  is_enabled: true
+  debug: false
 ```
 
-**DoorTypes for affected_doors:** https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Enums/DoorType.cs
+**DoorTypes for affected_doors:** https://github.com/ExMod-Team/EXILED/blob/master/EXILED/Exiled.API/Enums/DoorType.cs
 
 ---

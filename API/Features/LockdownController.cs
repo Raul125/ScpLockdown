@@ -36,6 +36,16 @@ public static class LockdownController
 
     public static void LockdownScp(RoleTypeId role, int time)
     {
+        ToggleLockedUpState(role);
+        if (role == RoleTypeId.Scp106)
+        {
+            foreach (Player ply in Player.Get(role))
+            {
+                if (ply.CurrentRoom.Type != RoomType.Pocket)
+                    ply.Teleport(RoomType.Pocket);
+            }
+        }
+
         ScpLockdown.RunningCoroutines.Add(Timing.RunCoroutine(UnlockScp(role, time)));
         if (!ScpDoors.TryGetValue(role, out var doors))
             return;
@@ -50,27 +60,24 @@ public static class LockdownController
 
         var state = role.LockedUpState();
         var ev = new TogglingLockedUpStateEventArgs(role, state, !state);
-
         if (!ev.IsAllowed)
             yield break;
 
         ToggleLockedUpState(role);
-
         if (ScpDoors.TryGetValue(role, out var doors))
+        {
             foreach (var door in doors)
                 door.Unlock();
-
+        }
+            
         if (role == RoleTypeId.Scp106)
         {
             var pos = RoleTypeId.Scp106.GetRandomSpawnLocation().Position;
-            foreach (var player in Player.List.Where(p => p.Role.Type == role))
-            {
-                player.Position = pos;
-                player.SendContainmentBreachText();
-            }
+            foreach (var player in Player.Get(role))
+                player.Teleport(pos);
         }
 
-        foreach (var player in Player.List.Where(p => p.Role.Type == role))
+        foreach (var player in Player.Get(role))
             player.SendContainmentBreachText();
     }
 }

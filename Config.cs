@@ -32,9 +32,11 @@ public class Config : IConfig
     [
         new CassieAnnouncement(
             "containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols",
+            "¡Contaiment breach!",
             60),
         new CassieAnnouncement(
             "containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols",
+            "¡Contaiment breach!",
             120)
     ];
 
@@ -43,6 +45,9 @@ public class Config : IConfig
 
     [Description("the plugin should use hints or broadcasts?.")]
     public bool UseHints { get; set; } = true;
+
+    [Description("the plugin should clear the previous broadcasts?.")]
+    public bool ClearBroadcasts { get; set; } = true;
 
     public bool IsEnabled { get; set; } = true;
 

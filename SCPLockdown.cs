@@ -17,8 +17,8 @@ public class ScpLockdown : Plugin<Config>
     public override string Author => "Raul125";
     public override string Name => "ScpLockdown";
     public override string Prefix => "scp_lockdown";
-    public override Version Version { get; } = new(3, 2, 2);
-    public override Version RequiredExiledVersion { get; } = new(8, 9, 5);
+    public override Version Version { get; } = new(3, 3, 0);
+    public override Version RequiredExiledVersion { get; } = new(8, 14, 1);
 
     public static ScpLockdown Instance { get; private set; }
 

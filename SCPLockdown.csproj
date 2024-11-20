@@ -27,6 +27,9 @@
         <Reference Include="UnityEngine.CoreModule">
             <HintPath>$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
+		<Reference Include="UnityEngine.PhysicsModule">
+            <HintPath>$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll</HintPath>
+        </Reference>
         <Reference Include="Mirror">
             <HintPath>$(EXILED_REFERENCES)\Mirror.dll</HintPath>
         </Reference>
