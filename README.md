@@ -51,13 +51,13 @@ scp_lockdown:
     unlock: false
     destroy: false
     open: true
-  # Use this if you want send cassies with a specified timing. (string, int => cassie text, delay in seconds)
+  # Use this if you want send cassies with a specified timing. (string, string, int => cassie text, subtitle text (leave it empty for normal cassie ''), delay in seconds)
   cassies:
   - content: 'containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols'
-    subtitle: '¡Contaiment breach!'
+    subtitle: 'ï¿½Contaiment breach!'
     delay: 60
   - content: 'containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols'
-    subtitle: '¡Contaiment breach!'
+    subtitle: 'ï¿½Contaiment breach!'
     delay: 120
   # Can the Scp-079 use/switch cameras while in lockdown?
   scp079_camera: true
