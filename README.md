@@ -14,7 +14,7 @@ Default:
 
 ```yaml
 scp_lockdown:
-# The affected SCPs, the shown text when unlocked and the time of their lockdown. (RoleType, string, int => RoleType, text, time in seconds)
+# Defines the affected SCPs, the text displayed upon unlocking, and the lockdown duration. (RoleTypeId, string, int => RoleType, display text, lockdown time in seconds)
   affected_scps:
   - role_type: Scp079
     text: 'Containment Breach!'
@@ -34,7 +34,7 @@ scp_lockdown:
   - role_type: Scp939
     text: 'Containment Breach!'
     time_to_unlock: 60
-  # Doors that you want to open/unlock/destroy/unlock after x seconds, this doors are locked at round start. (DoorType, int, bool, bool, bool => DoorType, delay in seconds, unlock?, open?, destroy?)
+  # Specifies doors to manage (e.g., lock, unlock, open, or destroy) after a delay. These doors are locked at the start of the round. (DoorType, int, bool, bool, bool => DoorType, delay in seconds, unlock?, open?, destroy?)
   affected_doors:
   - door_type: CheckpointLczA
     delay: 60
@@ -51,21 +51,23 @@ scp_lockdown:
     unlock: false
     destroy: false
     open: true
-  # Use this if you want send cassies with a specified timing. (string, string, int => cassie text, subtitle text (leave it empty for normal cassie ''), delay in seconds)
+  # Defines CASSIE announcements with specified timing. (string, string, int => CASSIE message text, subtitle text [optional, leave it empty ''], delay in seconds)
   cassies:
   - content: 'containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols'
-    subtitle: '�Contaiment breach!'
+    subtitle: 'Containment breach detected!'
     delay: 60
   - content: 'containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols'
-    subtitle: '�Contaiment breach!'
+    subtitle: 'Containment breach detected!'
     delay: 120
-  # Can the Scp-079 use/switch cameras while in lockdown?
+  # Determines if SCP-079 can use or switch cameras while in lockdown.
   scp079_camera: true
-  # the plugin should use hints or broadcasts?.
+  # Specifies whether the plugin should display hints or broadcasts.
   use_hints: true
-  # the plugin should clear the previous broadcasts?.
+  # Determines if the plugin should clear previous broadcasts before displaying new ones.
   clear_broadcasts: true
+  # Enables or disables the plugin.
   is_enabled: true
+  # Enables or disables debug mode for the plugin.
   debug: false
 ```
 

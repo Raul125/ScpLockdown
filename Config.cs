@@ -8,7 +8,7 @@ namespace ScpLockdown;
 
 public class Config : IConfig
 {
-    [Description("The affected SCPs, the shown text when unlocked and the time of their lockdown. (RoleType, string, int => RoleType, text, time in seconds)")]
+    [Description("Defines the affected SCPs, the text displayed upon unlocking, and the lockdown duration. (RoleTypeId, string, int => RoleType, display text, lockdown time in seconds)")]
     public List<ScpLocker> AffectedScps { get; set; } =
     [
         new ScpLocker(RoleTypeId.Scp079, "Containment Breach!", 60),
@@ -19,7 +19,7 @@ public class Config : IConfig
         new ScpLocker(RoleTypeId.Scp939, "Containment Breach!", 60)
     ];
 
-    [Description("Doors that you want to open/unlock/destroy/unlock after x seconds, this doors are locked at round start. (DoorType, int, bool, bool, bool => DoorType, delay in seconds, unlock?, open?, destroy?)")]
+    [Description("Specifies doors to manage (e.g., lock, unlock, open, or destroy) after a delay. These doors are locked at the start of the round. (DoorType, int, bool, bool, bool => DoorType, delay in seconds, unlock?, open?, destroy?)")]
     public List<AffectedDoor> AffectedDoors { get; set; } =
     [
         new AffectedDoor(DoorType.CheckpointLczA, 60, true, false, false),
@@ -27,29 +27,31 @@ public class Config : IConfig
         new AffectedDoor(DoorType.PrisonDoor, 60, false, true, false)
     ];
 
-    [Description("Use this if you want send cassies with a specified timing. (string, int => cassie text, delay in seconds)")]
+    [Description("Defines CASSIE announcements with specified timing. (string, string, int => CASSIE message text, subtitle text [optional, leave it empty ''], delay in seconds)")]
     public List<CassieAnnouncement> Cassies { get; set; } =
     [
         new CassieAnnouncement(
             "containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols",
-            "¡Contaiment breach!",
+            "Containment breach detected!",
             60),
         new CassieAnnouncement(
             "containment breach detected All remaining personnel are advised to proceed with standard evacuation protocols",
-            "¡Contaiment breach!",
+            "Containment breach detected!",
             120)
     ];
 
-    [Description("Can the Scp-079 use/switch cameras while in lockdown?")]
+    [Description("Determines if SCP-079 can use or switch cameras while in lockdown.")]
     public bool Scp079Camera { get; set; } = true;
 
-    [Description("the plugin should use hints or broadcasts?.")]
+    [Description("Specifies whether the plugin should display hints or broadcasts.")]
     public bool UseHints { get; set; } = true;
 
-    [Description("the plugin should clear the previous broadcasts?.")]
+    [Description("Determines if the plugin should clear previous broadcasts before displaying new ones.")]
     public bool ClearBroadcasts { get; set; } = true;
 
+    [Description("Enables or disables the plugin.")]
     public bool IsEnabled { get; set; } = true;
 
+    [Description("Enables or disables debug mode for the plugin.")]
     public bool Debug { get; set; } = false;
 }
