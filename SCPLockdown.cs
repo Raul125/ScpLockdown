@@ -2,9 +2,9 @@
 using Exiled.API.Features;
 using MEC;
 using PlayerEv = Exiled.Events.Handlers.Player;
-using ServerEv = Exiled.Events.Handlers.Server;
-using Scp106Ev = Exiled.Events.Handlers.Scp106;
 using Scp079Ev = Exiled.Events.Handlers.Scp079;
+using Scp106Ev = Exiled.Events.Handlers.Scp106;
+using ServerEv = Exiled.Events.Handlers.Server;
 
 namespace ScpLockdown;
 
@@ -17,8 +17,8 @@ public class ScpLockdown : Plugin<Config>
     public override string Author => "Raul125";
     public override string Name => "ScpLockdown";
     public override string Prefix => "scp_lockdown";
-    public override Version Version { get; } = new(3, 3, 0);
-    public override Version RequiredExiledVersion { get; } = new(8, 14, 1);
+    public override Version Version { get; } = new(3, 3, 1);
+    public override Version RequiredExiledVersion { get; } = new(9, 1, 1);
 
     public static ScpLockdown Instance { get; private set; }
 

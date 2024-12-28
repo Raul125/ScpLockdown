@@ -5,6 +5,7 @@ using Exiled.API.Features.Doors;
 using MEC;
 using PlayerRoles;
 using ScpLockdown.API.EventArgs;
+using UnityEngine;
 
 namespace ScpLockdown.API.Features;
 
@@ -25,13 +26,17 @@ public static class LockdownController
     public static void ToggleLockedUpState(RoleTypeId role)
     {
         if (ScpLockStates.ContainsKey(role))
+        {
             ScpLockStates[role] = !ScpLockStates[role];
+        }
     }
 
     public static void ResetAllStates()
     {
-        foreach (var key in ScpLockStates.Keys.ToList())
+        foreach (RoleTypeId key in ScpLockStates.Keys.ToList())
+        {
             ScpLockStates[key] = false;
+        }
     }
 
     public static void LockdownScp(RoleTypeId role, int time)
@@ -42,42 +47,56 @@ public static class LockdownController
             foreach (Player ply in Player.Get(role))
             {
                 if (ply.CurrentRoom.Type != RoomType.Pocket)
+                {
                     ply.Teleport(RoomType.Pocket);
+                }
             }
         }
 
         ScpLockdown.RunningCoroutines.Add(Timing.RunCoroutine(UnlockScp(role, time)));
-        if (!ScpDoors.TryGetValue(role, out var doors))
+        if (!ScpDoors.TryGetValue(role, out IEnumerable<Door> doors))
+        {
             return;
+        }
 
-        foreach (var door in doors)
+        foreach (Door door in doors)
+        {
             door.ChangeLock(DoorLockType.SpecialDoorFeature);
+        }
     }
 
     private static IEnumerator<float> UnlockScp(RoleTypeId role, int time)
     {
         yield return Timing.WaitForSeconds(time);
 
-        var state = role.LockedUpState();
-        var ev = new TogglingLockedUpStateEventArgs(role, state, !state);
+        bool state = role.LockedUpState();
+        TogglingLockedUpStateEventArgs ev = new(role, state, !state);
         if (!ev.IsAllowed)
+        {
             yield break;
+        }
 
         ToggleLockedUpState(role);
-        if (ScpDoors.TryGetValue(role, out var doors))
+        if (ScpDoors.TryGetValue(role, out IEnumerable<Door> doors))
         {
-            foreach (var door in doors)
+            foreach (Door door in doors)
+            {
                 door.Unlock();
-        }
-            
-        if (role == RoleTypeId.Scp106)
-        {
-            var pos = RoleTypeId.Scp106.GetRandomSpawnLocation().Position;
-            foreach (var player in Player.Get(role))
-                player.Teleport(pos);
+            }
         }
 
-        foreach (var player in Player.Get(role))
+        if (role == RoleTypeId.Scp106)
+        {
+            Vector3 pos = RoleTypeId.Scp106.GetRandomSpawnLocation().Position;
+            foreach (Player player in Player.Get(role))
+            {
+                player.Teleport(pos);
+            }
+        }
+
+        foreach (Player player in Player.Get(role))
+        {
             player.SendContainmentBreachText();
+        }
     }
 }

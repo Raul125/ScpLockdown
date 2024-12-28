@@ -8,13 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="packages\**"/>
-        <EmbeddedResource Remove="packages\**"/>
-        <None Remove="packages\**"/>
+        <Compile Remove="packages\**" />
+        <EmbeddedResource Remove="packages\**" />
+        <None Remove="packages\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="EXILED" Version="8.9.5"/>
+      <PackageReference Include="ExMod.Exiled" Version="9.1.1" />
     </ItemGroup>
 
     <ItemGroup>
